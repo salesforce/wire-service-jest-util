@@ -1,0 +1,9 @@
+{
+    "extends": "plugin:lwc/recommended",
+    "plugins": [
+        "lwc"
+    ],
+    "rules": {
+        "compat/compat": "off"
+    }
+}

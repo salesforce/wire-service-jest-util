@@ -1,0 +1,39 @@
+{
+  "name": "@salesforce/wire-service-jest-util",
+  "version": "2.2.0",
+  "description": "Utility library emit test data through @wire adapters in Lightning web component tests",
+  "license": "MIT",
+  "main": "dist/wire-service-jest-util.common.js",
+  "module": "dist/wire-service-jest-util.es.js",
+  "scripts": {
+    "clean": "rimraf dist node_modules",
+    "lint": "eslint src",
+    "build": "rollup -c",
+    "test": "jest --coverage",
+    "release": "npm publish"
+  },
+  "keywords": [
+    "lwc",
+    "wire-service",
+    "@wire",
+    "jest",
+    "testing"
+  ],
+  "repository": "https://github.com/salesforce/wire-service-jest-util",
+  "devDependencies": {
+    "eslint": "^4.6.1",
+    "eslint-plugin-lwc": "0.3.2",
+    "jest": "21.2.1",
+    "@lwc/compiler": "0.33.10",
+    "@lwc/engine": "0.33.10",
+    "@lwc/jest-transformer": "0.33.10",
+    "@lwc/wire-service": "0.33.10",
+    "rimraf": "^2.6.1",
+    "rollup": "0.50.0"
+  },
+  "lwc": {
+    "modules": {
+      "wire-service-jest-util": "dist/wire-service-jest-util.es.js"
+    }
+  }
+}

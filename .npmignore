@@ -1,0 +1,9 @@
+coverage/
+src/
+.*
+*.log
+rollup.config.js
+yarn.lock
+jest.config.js
+Jenkinsfile
+
