@@ -8,7 +8,7 @@ Assume you have a component like this.
 
 ```js
 import { LightningElement, wire } from 'lwc';
-import { getTodo } from 'x-todo-api';
+import { getTodo } from 'x/todoApi';
 export default class MyComponent extends LightningElement {
     @wire(getTodo, {id: 1})
     todo
@@ -20,10 +20,10 @@ You'd like to test the component's handling of `@wire` data and errors. This tes
  ```js
 import { createElement } from 'lwc';
 import { registerTestWireAdapter } from '@salesforce/wire-service-jest-util';
-import MyComponent from 'x-my-component';
+import MyComponent from 'x/myComponent';
 
  // adapter identifier used by the component under test
- import { getTodo } from 'x-todo-api';
+ import { getTodo } from 'x/todoApi';
 
 describe('@wire demonstration test', () => {
     // register a test wire adapter to control @wire(getTodo)
@@ -31,7 +31,7 @@ describe('@wire demonstration test', () => {
 
     // disconnect the component to reset the adapter. it is also
     // a best practice to cleanup after each test.
-    afterEach(() => { 
+    afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
@@ -64,7 +64,7 @@ There are two flavors of test adapters available: LDS and generic. Both allow te
 ```js
 /**
  * Registers a wire adapter that mimics Lightning Data Service (LDS) adapters behavior,
- * and emitted data and error shapes. For example, the emitted shape is 
+ * and emitted data and error shapes. For example, the emitted shape is
  * `{ data: object|undefined, error: object|undefined}`
  */
 registerLdsTestWireAdapter(identifier: any): LdsTestWireAdapter;
@@ -77,8 +77,8 @@ interface LdsTestWireAdapter {
     error(err: LdsError): void;
 
     /**
-     * Gets the last resolved config. Useful if component @wire uses includes 
-     * dynamic parameters. 
+     * Gets the last resolved config. Useful if component @wire uses includes
+     * dynamic parameters.
      */
     getLastConfig(): object;
 }
@@ -100,8 +100,8 @@ interface TestWireAdapter {
     emit(value: any): void;
 
     /**
-     * Gets the last resolved config. Useful if component @wire uses includes 
-     * dynamic parameters. 
+     * Gets the last resolved config. Useful if component @wire uses includes
+     * dynamic parameters.
      */
     getLastConfig(): object
 }
