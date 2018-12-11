@@ -1,4 +1,4 @@
-# @wire component unit test utility
+# @salesforce/wire-service-jest-util
 
 A utility so Lightning Web Component unit tests may control the data provisioned with `@wire`.
 
