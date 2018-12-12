@@ -10,7 +10,7 @@
     "lint": "eslint src",
     "build": "rollup -c",
     "test": "jest --coverage",
-    "release": "npm publish"
+    "release": "npm publish --access public"
   },
   "keywords": [
     "lwc",
