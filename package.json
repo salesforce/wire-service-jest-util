@@ -6,6 +6,7 @@
   "main": "dist/wire-service-jest-util.common.js",
   "module": "dist/wire-service-jest-util.es.js",
   "scripts": {
+    "check-license-headers": "node ./scripts/checkLicenseHeaders.js",
     "clean": "rimraf dist node_modules",
     "lint": "eslint src",
     "build": "rollup -c",
@@ -27,6 +28,7 @@
     "@lwc/wire-service": "0.33.17",
     "@salesforce/eslint-config-lwc": "^0.3.0",
     "eslint": "^4.6.1",
+    "isbinaryfile": "^3.0.3",
     "jest": "21.2.1",
     "rimraf": "^2.6.1",
     "rollup": "0.50.0"
