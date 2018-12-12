@@ -1,9 +1,10 @@
 {
-    "extends": "plugin:lwc/recommended",
-    "plugins": [
-        "lwc"
-    ],
-    "rules": {
-        "compat/compat": "off"
+    "extends": "eslint:recommended",
+    "env": {
+        "jest": true,
+        "node": true
+    },
+    "parserOptions": {
+        "sourceType": "module"
     }
 }
