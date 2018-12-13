@@ -9,7 +9,7 @@ Once the repository has been cloned you can run the following commands from the 
 ```sh
 $ yarn install       # install project dependencies
 $ yarn lint          # run linting against project code
-$ yarn test          # run test
+$ yarn test          # run tests
 ```
 
 ## Submitting code
