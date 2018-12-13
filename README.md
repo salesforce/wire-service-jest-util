@@ -1,6 +1,6 @@
 # @salesforce/wire-service-jest-util
 
-A utility so Lightning Web Component unit tests may control the data provisioned with `@wire`.
+A utility so Lightning Web Component unit tests can control the data provisioned with `@wire`.
 
 ## Basic Example
 
@@ -57,7 +57,7 @@ The utility works by allowing component unit tests to register a wire adapter fo
 
 ### Lightning Data Service (LDS) vs. Generic Adapters
 
-There are two flavors of test adapters available: LDS and generic. Both allow test authors to emit data through the wire. The main difference is that the LDS wire adapters (getRecord, getObjectInfo, etc.) follow certain patterns that are automatically handled by the LDS test adapter. These patterns include the shape in which data and errors are emitted, and an initial object emitted during registration. The generic test adapter directly emits any data passed to it. See the API section below for more details.
+There are two flavors of test adapters available: LDS and generic. Both allow test authors to emit data through the wire. The main difference is that the LDS wire adapters (`getRecord`, `getObjectInfo`, etc.) follow certain patterns that are automatically handled by the LDS test adapter. These patterns include the shape in which data and errors are emitted, and an initial object emitted during registration. The generic test adapter directly emits any data passed to it. See the API section below for more details.
 
 ## API
 
