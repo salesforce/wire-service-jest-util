@@ -84,7 +84,7 @@ interface LdsTestWireAdapter {
 }
 
 interface TransportResponse {
-    body: object[],
+    body: any,
     ok: boolean,
     status: number,
     statusText: string,

@@ -27,14 +27,14 @@ export default function createAdapter(adapterId) {
                 details = details || {
                     body: [{
                         errorCode: 'ILLEGAL_QUERY_PARAMETER_VALUE',
-                        message: "Expected '.' in all qualified names: Id is invalid",
+                        message: "Expected '.' in all qualified names: Foo is invalid",
                     }],
                     ok: false,
                     status: 400,
                     statusText: 'Bad Request',
                 };
             } else if (type === 'SERVICE_ERROR') {
-                const missingFieldMessage = 'Did not find all necessary fields for record';
+                const missingFieldMessage = 'Did not find all necessary fields for record: Foo';
                 details = details || {
                     errorCode: 'DENORMALIZE_FAILED',
                     message: missingFieldMessage,
