@@ -74,7 +74,7 @@ interface LdsTestWireAdapter {
     emit(value: object): void;
 
     /** Emits an error. */
-    error(err: LdsError): void;
+    error(message: string, type?: string, details?: TransportResponse | LdsServiceError): void;
 
     /**
      * Gets the last resolved config. Useful if component @wire uses includes
@@ -83,10 +83,17 @@ interface LdsTestWireAdapter {
     getLastConfig(): object;
 }
 
-interface LdsError {
-    status: number;
-    statusCode: string;
-    message: string;
+interface TransportResponse {
+    body: object[],
+    ok: boolean,
+    status: number,
+    statusText: string,
+}
+
+interface LdsServiceError {
+    errorCode: string,
+    message: string,
+    jsError: Error,
 }
 
 /**

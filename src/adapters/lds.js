@@ -17,9 +17,37 @@ export default function createAdapter(adapterId) {
         }
     };
 
-    const error = (err) => {
+    const error = (message, type, details) => {
         if (!done) {
             done = true;
+
+            // build the error payload with reasonable defaults
+            type = type || 'TRANSPORT_ERROR';
+            if (type === 'TRANSPORT_ERROR' ) {
+                details = details || {
+                    body: [{
+                        errorCode: 'ILLEGAL_QUERY_PARAMETER_VALUE',
+                        message: "Expected '.' in all qualified names: Id is invalid",
+                    }],
+                    ok: false,
+                    status: 400,
+                    statusText: 'Bad Request',
+                };
+            } else if (type === 'SERVICE_ERROR') {
+                const missingFieldMessage = 'Did not find all necessary fields for record';
+                details = details || {
+                    errorCode: 'DENORMALIZE_FAILED',
+                    message: missingFieldMessage,
+                    jsError: new Error(missingFieldMessage),
+                };
+            }
+
+            const err = {
+                message,
+                type,
+                details,
+            };
+
             wiredEventTargets.forEach(wiredEventTarget => wiredEventTarget.dispatchEvent(new ValueChangedEvent({ data: undefined, error: err })));
         }
     };
