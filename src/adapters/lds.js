@@ -25,10 +25,10 @@ export default function createAdapter(adapterId) {
                 throw new Error("'status' must be >= 400 or <= 599");
             }
 
-            body = body || {
+            body = body || [{
                 errorCode: 'NOT_FOUND',
                 message: 'The requested resource does not exist',
-            };
+            }];
 
             status = status || 404;
 

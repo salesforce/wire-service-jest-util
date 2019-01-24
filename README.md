@@ -80,10 +80,10 @@ interface LdsTestWireAdapter {
      *       ok: false,
      *       status: 404,
      *       statusText: "Not Found",
-     *       body: {
+     *       body: [{
      *           errorCode: "NOT_FOUND",
      *           message: "The requested resource does not exist",
-     *       }
+     *       }]
      *  }`
      */
     error(body?: any, status?: number, statusText?: string): void;
