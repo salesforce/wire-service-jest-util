@@ -17,9 +17,30 @@ export default function createAdapter(adapterId) {
         }
     };
 
-    const error = (err) => {
+    const error = (body, status, statusText) => {
         if (!done) {
             done = true;
+
+            if (status && (status < 400 || status > 599)) {
+                throw new Error("'status' must be >= 400 or <= 599");
+            }
+
+            body = body || [{
+                errorCode: 'NOT_FOUND',
+                message: 'The requested resource does not exist',
+            }];
+
+            status = status || 404;
+
+            statusText = statusText || 'Not Found';
+
+            const err = {
+                body,
+                ok: false,
+                status,
+                statusText,
+            };
+
             wiredEventTargets.forEach(wiredEventTarget => wiredEventTarget.dispatchEvent(new ValueChangedEvent({ data: undefined, error: err })));
         }
     };
