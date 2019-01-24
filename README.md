@@ -73,13 +73,13 @@ interface LdsTestWireAdapter {
     /** Emits data. */
     emit(value: object): void;
 
-    /** 
+    /**
      * Emits an error. By default this will emit a resource not found error.
-     * 
+     *
      * `{
      *       ok: false,
      *       status: 404,
-     *       statusText: "Not Found",
+     *       statusText: "NOT_FOUND",
      *       body: [{
      *           errorCode: "NOT_FOUND",
      *           message: "The requested resource does not exist",
