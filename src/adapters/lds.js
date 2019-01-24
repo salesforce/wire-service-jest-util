@@ -32,7 +32,7 @@ export default function createAdapter(adapterId) {
 
             status = status || 404;
 
-            statusText = statusText || 'Not Found';
+            statusText = statusText || 'NOT_FOUND';
 
             const err = {
                 body,
