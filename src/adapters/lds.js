@@ -17,35 +17,28 @@ export default function createAdapter(adapterId) {
         }
     };
 
-    const error = (message, type, details) => {
+    const error = (body, status, statusText) => {
         if (!done) {
             done = true;
 
-            // build the error payload with reasonable defaults
-            type = type || 'TRANSPORT_ERROR';
-            if (type === 'TRANSPORT_ERROR' ) {
-                details = details || {
-                    body: [{
-                        errorCode: 'ILLEGAL_QUERY_PARAMETER_VALUE',
-                        message: "Expected '.' in all qualified names: Foo is invalid",
-                    }],
-                    ok: false,
-                    status: 400,
-                    statusText: 'Bad Request',
-                };
-            } else if (type === 'SERVICE_ERROR') {
-                const missingFieldMessage = 'Did not find all necessary fields for record: Foo';
-                details = details || {
-                    errorCode: 'DENORMALIZE_FAILED',
-                    message: missingFieldMessage,
-                    jsError: new Error(missingFieldMessage),
-                };
+            if (status && (status < 400 || status > 599)) {
+                throw new Error("'status' must be >= 400 or <= 599");
             }
 
+            body = body || {
+                errorCode: 'NOT_FOUND',
+                message: 'The requested resource does not exist',
+            };
+
+            status = status || 404;
+
+            statusText = statusText || 'Not Found';
+
             const err = {
-                message,
-                type,
-                details,
+                body,
+                ok: false,
+                status,
+                statusText,
             };
 
             wiredEventTargets.forEach(wiredEventTarget => wiredEventTarget.dispatchEvent(new ValueChangedEvent({ data: undefined, error: err })));
