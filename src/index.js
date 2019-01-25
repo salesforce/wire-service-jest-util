@@ -8,6 +8,7 @@ import { register } from '@lwc/engine';
 import { registerWireService } from '@lwc/wire-service';
 import createLdsAdapter from './adapters/lds';
 import createGenericAdapter from './adapters/generic';
+import createApexAdapter from './adapters/apex';
 
 let registered = false;
 
@@ -29,6 +30,16 @@ function registerLdsTestWireAdapter(identifier) {
     return createLdsAdapter(identifier);
 }
 
+function registerApexTestWireAdapter(identifier) {
+    if (!identifier) {
+        throw new Error('No adapter specified');
+    }
+
+    ensureWireServiceRegistered();
+
+    return createApexAdapter(identifier);
+}
+
 function registerTestWireAdapter(identifier) {
     if (!identifier) {
         throw new Error('No adapter specified');
@@ -41,5 +52,6 @@ function registerTestWireAdapter(identifier) {
 
 export {
     registerLdsTestWireAdapter,
+    registerApexTestWireAdapter,
     registerTestWireAdapter,
 };

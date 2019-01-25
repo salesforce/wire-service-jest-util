@@ -65,11 +65,51 @@ There are two flavors of test adapters available: LDS and generic. Both allow te
 /**
  * Registers a wire adapter that mimics Lightning Data Service (LDS) adapters behavior,
  * and emitted data and error shapes. For example, the emitted shape is
- * `{ data: object|undefined, error: FetchResponse|undefined}`
+ * `{ data: object|undefined, error: FetchResponse|undefined}`.
  */
 registerLdsTestWireAdapter(identifier: any): LdsTestWireAdapter;
 
 interface LdsTestWireAdapter {
+    /** Emits data. */
+    emit(value: object): void;
+
+    /**
+     * Emits an error. By default this will emit a resource not found error.
+     *
+     * `{
+     *       ok: false,
+     *       status: 404,
+     *       statusText: "NOT_FOUND",
+     *       body: [{
+     *           errorCode: "NOT_FOUND",
+     *           message: "The requested resource does not exist",
+     *       }]
+     *  }`
+     */
+    error(body?: any, status?: number, statusText?: string): void;
+
+    /**
+     * Gets the last resolved config. Useful if component @wire uses includes
+     * dynamic parameters.
+     */
+    getLastConfig(): object;
+}
+
+interface FetchResponse {
+    body: any,
+    ok: false,
+    status: number,
+    statusText: string,
+}
+
+/**
+ * Registers a wire adapter that connects to an Apex method and provides APIs
+ * to emit data and errors in the expected shape. For example, the emitted shape
+ * is `{ data: object|undefined, error: FetchResponse|undefined}`.
+ */
+registerApexTestWireAdapter(identifier: any): ApexTestWireAdapter;
+
+interface ApexTestWireAdapter {
     /** Emits data. */
     emit(value: object): void;
 
