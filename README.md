@@ -118,12 +118,11 @@ interface ApexTestWireAdapter {
      *
      * `{
      *       ok: false,
-     *       status: 404,
-     *       statusText: "NOT_FOUND",
-     *       body: [{
-     *           errorCode: "NOT_FOUND",
-     *           message: "The requested resource does not exist",
-     *       }]
+     *       status: 400,
+     *       statusText: "Bad Request",
+     *       body: {
+     *           message: "An internal server error has occurred",
+     *       }
      *  }`
      */
     error(body?: any, status?: number, statusText?: string): void;
