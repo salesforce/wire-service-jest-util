@@ -22,12 +22,14 @@ import { createElement } from 'lwc';
 import { registerTestWireAdapter } from '@salesforce/wire-service-jest-util';
 import MyComponent from 'x/myComponent';
 
- // adapter identifier used by the component under test
- import { getTodo } from 'x/todoApi';
+// adapter identifier used by the component under test
+import { getTodo } from 'x/todoApi';
+
+// **IMPORTANT** call the register API before creating the component under test
+// register a test wire adapter to control @wire(getTodo)
+const getTodoWireAdapter = registerTestWireAdapter(getTodo);
 
 describe('@wire demonstration test', () => {
-    // register a test wire adapter to control @wire(getTodo)
-    const getTodoWireAdapter = registerTestWireAdapter(getTodo);
 
     // disconnect the component to reset the adapter. it is also
     // a best practice to cleanup after each test.
@@ -55,9 +57,9 @@ describe('@wire demonstration test', () => {
 
 The utility works by allowing component unit tests to register a wire adapter for an arbitrary identifier. Registration returns a test adapter which has the ability to emit data and get the last resolved `@wire` configuration.
 
-### Lightning Data Service (LDS) vs. Generic Adapters
+### Adapter Types
 
-There are two flavors of test adapters available: LDS and generic. Both allow test authors to emit data through the wire. The main difference is that the LDS wire adapters (`getRecord`, `getObjectInfo`, etc.) follow certain patterns that are automatically handled by the LDS test adapter. These patterns include the shape in which data and errors are emitted, and an initial object emitted during registration. The generic test adapter directly emits any data passed to it. See the API section below for more details.
+There are three flavors of test adapters: Lightning Data Service (LDS), Apex, and generic. All allow test authors to emit data through the wire. The main difference is that the LDS and Apex wire adapters follow certain patterns that are automatically handled by the test adapters. These patterns include the shape in which data and errors are emitted, and an initial object emitted during registration. The generic test adapter directly emits any data passed to it. See the API section below for more details.
 
 ## API
 
