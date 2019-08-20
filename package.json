@@ -37,5 +37,8 @@
     "modules": {
       "wire-service-jest-util": "dist/wire-service-jest-util.es.js"
     }
+  },
+  "resolutions": {
+    "js-yaml": "^3.13.1"
   }
 }
