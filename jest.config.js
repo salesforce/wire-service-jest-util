@@ -15,15 +15,14 @@ module.exports = {
     transform: {
         '^.+\\.js$': '@lwc/jest-transformer',
     },
-    mapCoverage: true,
     collectCoverageFrom: ['src/*.js', '!**/__tests__/**'],
     coverageReporters: ['text', 'text-summary'],
     coverageThreshold: {
         global: {
-            branches: 50,
-            functions: 33,
-            lines: 58,
-            statements: 56
+            branches: 60,
+            functions: 70,
+            lines: 75,
+            statements: 75
         },
     },
 };
