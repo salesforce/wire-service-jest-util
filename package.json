@@ -29,7 +29,7 @@
     "@salesforce/eslint-config-lwc": "^0.3.0",
     "eslint": "^5.10.0",
     "isbinaryfile": "^3.0.3",
-    "jest": "21.2.1",
+    "jest": "24.8.0",
     "rimraf": "^2.6.1",
     "rollup": "0.50.0"
   },
