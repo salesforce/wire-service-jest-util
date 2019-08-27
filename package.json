@@ -27,7 +27,7 @@
     "@lwc/jest-transformer": "0.37.4-220.2",
     "@lwc/wire-service": "0.37.4-220.2",
     "@salesforce/eslint-config-lwc": "^0.3.0",
-    "eslint": "^5.10.0",
+    "eslint": "^5.16.0",
     "isbinaryfile": "^3.0.3",
     "jest": "24.8.0",
     "rimraf": "^2.6.1",
