@@ -22,16 +22,16 @@
   ],
   "repository": "https://github.com/salesforce/wire-service-jest-util",
   "devDependencies": {
-    "@lwc/compiler": "0.37.4-220.2",
-    "@lwc/engine": "0.37.4-220.2",
-    "@lwc/jest-transformer": "0.37.4-220.2",
-    "@lwc/wire-service": "0.37.4-220.2",
-    "@salesforce/eslint-config-lwc": "^0.3.0",
-    "eslint": "^5.16.0",
-    "isbinaryfile": "^3.0.3",
-    "jest": "24.8.0",
-    "rimraf": "^2.6.1",
-    "rollup": "0.50.0"
+    "@lwc/compiler": "^1.3.2",
+    "@lwc/engine": "1.3.2",
+    "@lwc/jest-transformer": "^4.5.1",
+    "@lwc/wire-service": "1.3.2",
+    "@salesforce/eslint-config-lwc": "^0.5.0",
+    "eslint": "^6.8.0",
+    "isbinaryfile": "^4.0.5",
+    "jest": "25.1.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.1.0"
   },
   "lwc": {
     "modules": [
@@ -40,8 +40,5 @@
         "path": "dist/wire-service-jest-util.es.js"
       }
     ]
-  },
-  "resolutions": {
-    "js-yaml": "^3.13.1"
   }
 }
