@@ -4,48 +4,78 @@
  * SPDX-License-Identifier: MIT
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
  */
-import { register } from '@lwc/engine';
-import { registerWireService } from '@lwc/wire-service';
 import createLdsAdapter from './adapters/lds';
 import createGenericAdapter from './adapters/generic';
 import createApexAdapter from './adapters/apex';
+import WireAdapter from "./adapters/WireAdapter";
 
-let registered = false;
+const { hasOwnProperty } = Object.prototype;
 
-// will not be necessary once wire-service is self-registering (W-4844671)
-function ensureWireServiceRegistered() {
-    if (!registered) {
-        registerWireService(register);
-        registered = true;
-    }
-}
-
-function registerLdsTestWireAdapter(identifier) {
-    if (!identifier) {
+function validateAdapterId(adapterId) {
+    if (!adapterId) {
         throw new Error('No adapter specified');
     }
 
-    ensureWireServiceRegistered();
+    // @todo: maybe this should be an error.
+    if (!hasOwnProperty.call(adapterId, 'adapter') || !hasOwnProperty.call(adapterId.adapter, 'mock')) {
+        // If we reach this path, it means:
+        // 1- You are in platform with custom mocks for a wire adapter. Remove it, the stubs provide platform mocks.
+        // 2- You are off-platform. You need to use createWireAdapterMock, in order to use register(*)WireAdapter.
+        console.warn("If you are in platform, please remove your custom adapter mock or " +
+            "use createWireAdapterMock to mock wire adapters that will be used " +
+            "with registerLdsTestWireAdapter, registerApexTestWireAdapter or registerTestWireAdapter.");
+    }
+
+    // If the adapterId is not a jest.mock, we can't use it in the wire reform.
+    if (!hasOwnProperty.call(adapterId, 'mock')) {
+        // improve message later.
+        throw new Error('adapterId should be a jest mock function. ' +
+            'Please update your mocks and use createWireAdapterMock to mock wire adapters.')
+    }
+}
+
+const noop = ()=>{};
+
+/**
+ * Returns a mock for a wire adapter.
+ *
+ * @param {Function} apexFn An apex adapters are also callable, this function will be called
+ *                          when the wire adapter is invoked imperatively.
+ * @returns {typeof jest.fn}
+ */
+function createWireAdapterMock(apexFn) {
+    const adapterMock = jest.fn();
+    if (typeof apexFn === "function") {
+        adapterMock.mockImplementation(apexFn);
+    }
+
+    adapterMock.adapter = jest.fn().mockImplementation((dataCallback) => {
+        return new WireAdapter(
+            dataCallback, {
+                onUpdate: noop,
+                onConnect: noop,
+                onDisconnect: noop
+            }
+        );
+    });
+
+    return adapterMock;
+}
+
+function registerLdsTestWireAdapter(identifier) {
+    validateAdapterId(identifier);
 
     return createLdsAdapter(identifier);
 }
 
 function registerApexTestWireAdapter(identifier) {
-    if (!identifier) {
-        throw new Error('No adapter specified');
-    }
-
-    ensureWireServiceRegistered();
+    validateAdapterId(identifier);
 
     return createApexAdapter(identifier);
 }
 
 function registerTestWireAdapter(identifier) {
-    if (!identifier) {
-        throw new Error('No adapter specified');
-    }
-
-    ensureWireServiceRegistered();
+    validateAdapterId(identifier);
 
     return createGenericAdapter(identifier);
 }
@@ -54,4 +84,5 @@ export {
     registerLdsTestWireAdapter,
     registerApexTestWireAdapter,
     registerTestWireAdapter,
+    createWireAdapterMock,
 };

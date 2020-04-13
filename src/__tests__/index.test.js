@@ -6,9 +6,36 @@
  */
 import * as target from '../index.js';
 
+describe('createWireAdapterMock', () => {
+    it('should return a wire adapter', () => {
+        const wireAdapterMock = target.createWireAdapterMock();
+
+        expect(wireAdapterMock).toHaveProperty('adapter');
+        const adapterInstance = new wireAdapterMock.adapter(() => {});
+        expect(adapterInstance).toHaveProperty('emit');
+        expect(adapterInstance).toHaveProperty('connect');
+        expect(adapterInstance).toHaveProperty('update');
+        expect(adapterInstance).toHaveProperty('disconnect');
+    });
+
+    it('should return a wire adapter mock for apex when apex fn is passed', () => {
+        const apexFn = jest.fn();
+        const wireAdapterMock = target.createWireAdapterMock(apexFn);
+
+        expect(wireAdapterMock).toHaveProperty('adapter');
+
+        apexFn('test');
+
+        expect(apexFn).toHaveBeenCalled();
+        expect(apexFn).toHaveBeenCalledWith('test');
+    });
+});
+
 describe('registerLdsTestWireAdapter', () => {
+    const adapterMock = target.createWireAdapterMock();
+
     it('returns a test wire adapter', () => {
-        const testWireAdapter = target.registerLdsTestWireAdapter('test');
+        const testWireAdapter = target.registerLdsTestWireAdapter(adapterMock);
         expect(testWireAdapter).toHaveProperty('emit');
         expect(testWireAdapter).toHaveProperty('error');
         expect(testWireAdapter).toHaveProperty('getLastConfig');
@@ -16,14 +43,23 @@ describe('registerLdsTestWireAdapter', () => {
 
     it('throws error when no adapter id', () => {
         expect(() => {
-            target.registerTestWireAdapter();
+            target.registerLdsTestWireAdapter();
         }).toThrow('No adapter specified');
+    });
+
+    it('throws error when no valid mock', () => {
+        expect(() => {
+            target.registerLdsTestWireAdapter(function () {});
+        }).toThrow('adapterId should be a jest mock function. Please update your mocks and use ' +
+            'createWireAdapterMock to mock wire adapters.');
     });
 });
 
 describe('registerTestWireAdapter', () => {
+    const adapterMock = target.createWireAdapterMock();
+
     it('returns a test wire adapter', () => {
-        const testWireAdapter = target.registerTestWireAdapter('test');
+        const testWireAdapter = target.registerTestWireAdapter(adapterMock);
         expect(testWireAdapter).toHaveProperty('emit');
         expect(testWireAdapter).not.toHaveProperty('error');
         expect(testWireAdapter).toHaveProperty('getLastConfig');
@@ -33,5 +69,12 @@ describe('registerTestWireAdapter', () => {
         expect(() => {
             target.registerTestWireAdapter();
         }).toThrow('No adapter specified');
+    });
+
+    it('throws error when no valid mock', () => {
+        expect(() => {
+            target.registerTestWireAdapter(function () {});
+        }).toThrow('adapterId should be a jest mock function. Please update your mocks and use ' +
+            'createWireAdapterMock to mock wire adapters.');
     });
 });

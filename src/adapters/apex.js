@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
  */
-import { register, ValueChangedEvent } from '@lwc/wire-service';
+import WireAdapter from "./WireAdapter";
 
 export default function createAdapter(adapterId) {
     let done = false;
@@ -13,7 +13,7 @@ export default function createAdapter(adapterId) {
 
     const emit = (value) => {
         if (!done) {
-            wiredEventTargets.forEach(wiredEventTarget => wiredEventTarget.dispatchEvent(new ValueChangedEvent({ data: value, error: undefined })));
+            wiredEventTargets.forEach(wiredEventTarget => wiredEventTarget.emit({ data: value, error: undefined }));
         }
     };
 
@@ -40,7 +40,7 @@ export default function createAdapter(adapterId) {
                 statusText,
             };
 
-            wiredEventTargets.forEach(wiredEventTarget => wiredEventTarget.dispatchEvent(new ValueChangedEvent({ data: undefined, error: err })));
+            wiredEventTargets.forEach(wiredEventTarget => wiredEventTarget.emit({ data: undefined, error: err }));
         }
     };
 
@@ -55,29 +55,35 @@ export default function createAdapter(adapterId) {
         }
     };
 
-    register(adapterId, (wiredEventTarget) => {
+    const adapter = adapterId.adapter ? adapterId.adapter : adapterId;
+
+    adapter.mockReset();
+    adapter.mockImplementation(function(dataCallback) {
         done = false;
-        add(wiredEventTargets, wiredEventTarget);
-        wiredEventTarget.dispatchEvent(new ValueChangedEvent({ data: undefined, error: undefined }));
 
-        wiredEventTarget.addEventListener('connect', () => {
-            done = false;
-            lastConfig = {};
-            add(wiredEventTargets, wiredEventTarget);
-        });
-
-        wiredEventTarget.addEventListener('disconnect', () => {
-            done = true;
-            lastConfig = undefined;
-            const idx = wiredEventTargets.indexOf(wiredEventTarget);
-            if (idx > -1) {
-                wiredEventTargets.splice(idx, 1);
+        const wireAdapterInstance = new WireAdapter(dataCallback, {
+            onConnect: (adapterInstance) => {
+                done = false;
+                lastConfig = {};
+                add(wiredEventTargets, adapterInstance);
+            },
+            onUpdate: (newConfig) => {
+                lastConfig = newConfig;
+            },
+            onDisconnect: (adapterInstance) => {
+                done = true;
+                lastConfig = undefined;
+                const idx = wiredEventTargets.indexOf(adapterInstance);
+                if (idx > -1) {
+                    wiredEventTargets.splice(idx, 1);
+                }
             }
         });
 
-        wiredEventTarget.addEventListener('config', (newConfig) => {
-            lastConfig = newConfig;
-        });
+        add(wiredEventTargets, wireAdapterInstance);
+        dataCallback({ data: undefined, error: undefined });
+
+        return wireAdapterInstance;
     });
 
     return {
