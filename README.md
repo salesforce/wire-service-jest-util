@@ -64,7 +64,7 @@ describe('@wire demonstration test', () => {
 
 ## Overview
 
-The utility works by allowing component unit tests change the behavior of the wire adapter mock. Registration returns a test adapter which has the ability to emit data and get the last resolved `@wire` configuration.
+The utility works by allowing component unit tests to change the behavior of the wire adapter mock. Registration returns a test adapter which has the ability to emit data and get the last resolved `@wire` configuration.
 
 ### Adapter Types
 
