@@ -17,6 +17,15 @@ export default class MyComponent extends LightningElement {
 
 You'd like to test the component's handling of `@wire` data and errors. This test utility makes it trivial.
 
+First you will need to mock the `x/todoApi` module:
+```js
+import { createWireAdapterMock } from '@salesforce/wire-service-jest-util';
+
+export const getTodo = createWireAdapterMock();
+```
+
+Once the wire adapter does not depend on outside code or data, you can test your component.
+
  ```js
 import { createElement } from 'lwc';
 import { registerTestWireAdapter } from '@salesforce/wire-service-jest-util';
@@ -55,7 +64,7 @@ describe('@wire demonstration test', () => {
 
 ## Overview
 
-The utility works by allowing component unit tests to register a wire adapter for an arbitrary identifier. Registration returns a test adapter which has the ability to emit data and get the last resolved `@wire` configuration.
+The utility works by allowing component unit tests change the behavior of the wire adapter mock. Registration returns a test adapter which has the ability to emit data and get the last resolved `@wire` configuration.
 
 ### Adapter Types
 
@@ -65,11 +74,18 @@ There are three flavors of test adapters: Lightning Data Service (LDS), Apex, an
 
 ```js
 /**
+ * Returns a mock for a wire adapter.
+ * Apex wire adapters can be used along with the @wire decorator or can be called imperatively. You can optionally 
+ * pass a function which will be called when you invoke imperatively the wire adapter mock.
+ */
+createWireAdapterMock(apexFn): WireAdapterMock;
+
+/**
  * Registers a wire adapter that mimics Lightning Data Service (LDS) adapters behavior,
  * and emitted data and error shapes. For example, the emitted shape is
  * `{ data: object|undefined, error: FetchResponse|undefined}`.
  */
-registerLdsTestWireAdapter(identifier: any): LdsTestWireAdapter;
+registerLdsTestWireAdapter(identifier: WireAdapterMock): LdsTestWireAdapter;
 
 interface LdsTestWireAdapter {
     /** Emits data. */
@@ -109,7 +125,7 @@ interface FetchResponse {
  * to emit data and errors in the expected shape. For example, the emitted shape
  * is `{ data: object|undefined, error: FetchResponse|undefined}`.
  */
-registerApexTestWireAdapter(identifier: any): ApexTestWireAdapter;
+registerApexTestWireAdapter(identifier: WireAdapterMock): ApexTestWireAdapter;
 
 interface ApexTestWireAdapter {
     /** Emits data. */
@@ -147,7 +163,7 @@ interface FetchResponse {
  * Registers a generic wire adapter for the given identifier. Emitted values may be of
  * any shape.
  */
-registerTestWireAdapter(identifier: any): TestWireAdapter;
+registerTestWireAdapter(identifier: WireAdapterMock): TestWireAdapter;
 
 interface TestWireAdapter {
     /** Emits any value of any shape. */
