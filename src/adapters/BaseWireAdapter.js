@@ -30,25 +30,3 @@ export default class BaseWireAdapter {
     }
 
 }
-// export default function BaseWireAdapter(dataCallback, { onUpdate, onConnect, onDisconnect }) {
-//     this._dataCallback = dataCallback;
-//     this._onUpdate = onUpdate;
-//     this._onConnect = onConnect;
-//     this._onDisconnect = onDisconnect;
-// }
-//
-// BaseWireAdapter.prototype.update = function (config) {
-//     this._onUpdate(config);
-// };
-//
-// BaseWireAdapter.prototype.connect = function () {
-//     this._onConnect();
-// };
-//
-// BaseWireAdapter.prototype.disconnect = function () {
-//     this._onDisconnect();
-// };
-//
-// BaseWireAdapter.prototype.emit = function (value) {
-//     this._dataCallback(value);
-// };

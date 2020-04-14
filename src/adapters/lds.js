@@ -56,7 +56,6 @@ export default function createAdapter(adapterId) {
         }
     };
 
-    adapterId.adapter.mockReset();
     adapterId.adapter.mockImplementation(function(dataCallback) {
         done = false;
 
