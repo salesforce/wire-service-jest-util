@@ -24,7 +24,7 @@ import { createWireAdapterMock } from '@salesforce/wire-service-jest-util';
 export const getTodo = createWireAdapterMock();
 ```
 
-Once the wire adapter does not depend on outside code or data, you can test your component.
+Now that the wire adapter does not depend on outside code or data, you can test your component.
 
  ```js
 import { createElement } from 'lwc';
