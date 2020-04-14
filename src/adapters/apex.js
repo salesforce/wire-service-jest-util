@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: MIT
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
  */
-import WireAdapter from "./WireAdapter";
+import BaseWireAdapter from "./BaseWireAdapter";
 
 export default function createAdapter(adapterId) {
     let done = false;
@@ -61,7 +61,7 @@ export default function createAdapter(adapterId) {
     adapter.mockImplementation(function(dataCallback) {
         done = false;
 
-        const wireAdapterInstance = new WireAdapter(dataCallback, {
+        const wireAdapterInstance = new BaseWireAdapter(dataCallback, {
             onConnect: (adapterInstance) => {
                 done = false;
                 lastConfig = {};

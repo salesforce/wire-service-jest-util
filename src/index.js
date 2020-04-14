@@ -7,7 +7,7 @@
 import createLdsAdapter from './adapters/lds';
 import createGenericAdapter from './adapters/generic';
 import createApexAdapter from './adapters/apex';
-import WireAdapter from "./adapters/WireAdapter";
+import BaseWireAdapter from "./adapters/BaseWireAdapter";
 
 const { hasOwnProperty } = Object.prototype;
 
@@ -50,7 +50,7 @@ function createWireAdapterMock(apexFn) {
     }
 
     adapterMock.adapter = jest.fn().mockImplementation((dataCallback) => {
-        return new WireAdapter(
+        return new BaseWireAdapter(
             dataCallback, {
                 onUpdate: noop,
                 onConnect: noop,
