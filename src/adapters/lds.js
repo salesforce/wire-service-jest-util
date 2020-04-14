@@ -56,11 +56,8 @@ export default function createAdapter(adapterId) {
         }
     };
 
-    // @todo: maybe we shouldn't allow other mocks that are not those returned by createWireAdapterMock.
-    const adapter = adapterId.adapter ? adapterId.adapter : adapterId;
-
-    adapter.mockReset();
-    adapter.mockImplementation(function(dataCallback) {
+    adapterId.adapter.mockReset();
+    adapterId.adapter.mockImplementation(function(dataCallback) {
         done = false;
 
         const wireAdapterInstance = new BaseWireAdapter(dataCallback, {

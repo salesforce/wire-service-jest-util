@@ -21,16 +21,9 @@ function validateAdapterId(adapterId) {
         // If we reach this path, it means:
         // 1- You are in platform with custom mocks for a wire adapter. Remove it, the stubs provide platform mocks.
         // 2- You are off-platform. You need to use createWireAdapterMock, in order to use register(*)WireAdapter.
-        console.warn("If you are in platform, please remove your custom adapter mock or " +
+        throw new Error("If you are in platform, please remove your custom adapter mock or " +
             "use createWireAdapterMock to mock wire adapters that will be used " +
             "with registerLdsTestWireAdapter, registerApexTestWireAdapter or registerTestWireAdapter.");
-    }
-
-    // If the adapterId is not a jest.mock, we can't use it in the wire reform.
-    if (!hasOwnProperty.call(adapterId, 'mock')) {
-        // improve message later.
-        throw new Error('adapterId should be a jest mock function. ' +
-            'Please update your mocks and use createWireAdapterMock to mock wire adapters.')
     }
 }
 

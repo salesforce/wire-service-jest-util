@@ -6,6 +6,10 @@
  */
 import * as target from '../index.js';
 
+const INVALID_ADAPTER_ERROR = "If you are in platform, please remove your custom adapter mock or " +
+    "use createWireAdapterMock to mock wire adapters that will be used " +
+    "with registerLdsTestWireAdapter, registerApexTestWireAdapter or registerTestWireAdapter.";
+
 describe('createWireAdapterMock', () => {
     it('should return a wire adapter', () => {
         const wireAdapterMock = target.createWireAdapterMock();
@@ -101,8 +105,7 @@ describe('registerLdsTestWireAdapter', () => {
     it('throws error when no valid mock', () => {
         expect(() => {
             target.registerLdsTestWireAdapter(function () {});
-        }).toThrow('adapterId should be a jest mock function. Please update your mocks and use ' +
-            'createWireAdapterMock to mock wire adapters.');
+        }).toThrow(INVALID_ADAPTER_ERROR);
     });
 });
 
@@ -156,8 +159,7 @@ describe('registerTestWireAdapter', () => {
     it('throws error when no valid mock', () => {
         expect(() => {
             target.registerTestWireAdapter(function () {});
-        }).toThrow('adapterId should be a jest mock function. Please update your mocks and use ' +
-            'createWireAdapterMock to mock wire adapters.');
+        }).toThrow(INVALID_ADAPTER_ERROR);
     });
 });
 
@@ -243,7 +245,6 @@ describe('registerApexTestWireAdapter', () => {
     it('throws error when no valid mock', () => {
         expect(() => {
             target.registerApexTestWireAdapter(function () {});
-        }).toThrow('adapterId should be a jest mock function. Please update your mocks and use ' +
-            'createWireAdapterMock to mock wire adapters.');
+        }).toThrow(INVALID_ADAPTER_ERROR);
     });
 });

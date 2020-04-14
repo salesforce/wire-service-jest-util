@@ -55,10 +55,8 @@ export default function createAdapter(adapterId) {
         }
     };
 
-    const adapter = adapterId.adapter ? adapterId.adapter : adapterId;
-
-    adapter.mockReset();
-    adapter.mockImplementation(function(dataCallback) {
+    adapterId.adapter.mockReset();
+    adapterId.adapter.mockImplementation(function(dataCallback) {
         done = false;
 
         const wireAdapterInstance = new BaseWireAdapter(dataCallback, {
