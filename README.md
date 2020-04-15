@@ -176,3 +176,41 @@ interface TestWireAdapter {
     getLastConfig(): object
 }
 ```
+
+## Breaking changes
+
+### Migrating from version 2.x to 3.x
+
+LWC version 1.5.0 includes a [reform to the wire protocol](https://github.com/salesforce/lwc-rfcs/blob/master/text/0000-wire-reform.md). With such reform, the wire-service now requires a wire-adapter in the proper format.
+
+In version 2.x of the library, you may be using a custom mock, for example for `lightning/navigation`:
+
+```js
+export const CurrentPageReference = jest.fn();
+
+// ... rest of the mocked module.
+```
+
+You will need to change that module mock and use the new `createWireAdapterMock` included in function in version 3.x. Example:
+
+```js
+import { createWireAdapterMock } from '@salesforce/wire-service-jest-utils';
+
+export const CurrentPageReference = createWireAdapterMock();
+
+// ... rest of the mocked module
+```
+
+#### FAQ
+
+- I'm on platform (sfdx) and I don't have any custom mocks for modules exposing wire adapters, should I do anything?
+
+No, all exposed modules in the platform are mocked for you.
+
+- I'm on platform, and I have custom mocks for some modules exposing wire adapters, what should I do?
+
+If you are on platform, we already provide those mocks for you, removing your custom mocks should be enough. If you want to keep your custom mocks, follow the steps in [Migrating from version 2.x to 3.x](###migrating-from-version-2.x-to-3.x).
+
+- I'm off platform, what should i do?
+
+Follow the steps in [Migrating from version 2.x to 3.x](###migrating-from-version-2.x-to-3.x).
