@@ -209,8 +209,8 @@ No, all exposed modules in the platform are mocked for you.
 
 - I'm on platform, and I have custom mocks for some modules exposing wire adapters, what should I do?
 
-If you are on platform, we already provide those mocks for you, removing your custom mocks should be enough. If you want to keep your custom mocks, follow the steps in [Migrating from version 2.x to 3.x](###migrating-from-version-2.x-to-3.x).
+If you are on platform, we already provide those mocks for you, removing your custom mocks should be enough. If you want to keep your custom mocks, follow the steps in [Migrating from version 2.x to 3.x](#migrating-from-version-2x-to-3x).
 
 - I'm off platform, what should i do?
 
-Follow the steps in [Migrating from version 2.x to 3.x](###migrating-from-version-2.x-to-3.x).
+Follow the steps in [Migrating from version 2.x to 3.x](#migrating-from-version-2x-to-3x).
