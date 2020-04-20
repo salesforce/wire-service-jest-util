@@ -7,14 +7,6 @@
 /* eslint-env node */
 
 module.exports = {
-    moduleFileExtensions: ['js'],
-    moduleNameMapper: {
-        '^lwc-wire-service$': require.resolve('@lwc/wire-service'),
-        '^lwc-engine$': require.resolve('@lwc/engine'),
-    },
-    transform: {
-        '^.+\\.js$': '@lwc/jest-transformer',
-    },
     collectCoverageFrom: ['src/*.js', '!**/__tests__/**'],
     coverageReporters: ['text', 'text-summary'],
     coverageThreshold: {
