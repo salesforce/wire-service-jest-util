@@ -12,7 +12,7 @@ import createApexAdapter from './adapters/apex';
 
 let registered = false;
 
-// will not be necessary once wire-service is self-registering (W-4844671)
+// Not needed since lwc >= 1.5.0
 function ensureWireServiceRegistered() {
     if (!registered) {
         registerWireService(register);
@@ -20,10 +20,15 @@ function ensureWireServiceRegistered() {
     }
 }
 
-function registerLdsTestWireAdapter(identifier) {
-    if (!identifier) {
+
+function validateAdapterId(adapterId) {
+    if (!adapterId) {
         throw new Error('No adapter specified');
     }
+}
+
+function registerLdsTestWireAdapter(identifier) {
+    validateAdapterId(identifier);
 
     ensureWireServiceRegistered();
 
@@ -31,9 +36,7 @@ function registerLdsTestWireAdapter(identifier) {
 }
 
 function registerApexTestWireAdapter(identifier) {
-    if (!identifier) {
-        throw new Error('No adapter specified');
-    }
+    validateAdapterId(identifier);
 
     ensureWireServiceRegistered();
 
@@ -41,9 +44,7 @@ function registerApexTestWireAdapter(identifier) {
 }
 
 function registerTestWireAdapter(identifier) {
-    if (!identifier) {
-        throw new Error('No adapter specified');
-    }
+    validateAdapterId(identifier);
 
     ensureWireServiceRegistered();
 
