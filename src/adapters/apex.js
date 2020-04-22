@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: MIT
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
  */
-
 import { spyOnAdapter } from "./utils";
 
 export default function createAdapter(adapterId) {
@@ -36,7 +35,9 @@ export default function createAdapter(adapterId) {
 
     return {
         emit(value) {
-            wiredEventTargets.forEach(wiredEventTarget => wiredEventTarget.emit(value));
+            if (!done) {
+                wiredEventTargets.forEach(wiredEventTarget => wiredEventTarget.emit(value));
+            }
         },
         error(body, status, statusText) {
             if (!done) {
