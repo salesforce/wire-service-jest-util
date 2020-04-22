@@ -4,50 +4,36 @@
  * SPDX-License-Identifier: MIT
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
  */
-import { register, ValueChangedEvent } from '@lwc/wire-service';
+import { spyOnAdapter } from './utils';
 
 export default function createAdapter(adapterId) {
     let lastConfig;
-    const wiredEventTargets = [];
-
-    const emit = (value) => {
-        wiredEventTargets.forEach(wiredEventTarget => wiredEventTarget.dispatchEvent(new ValueChangedEvent(value)));
-    };
-
-    const getLastConfig = () => {
-        return lastConfig;
-    };
-
-    const add = (arr, item) => {
-        const idx = arr.indexOf(item);
-        if (idx === -1) {
-            arr.push(item);
+    const wiredEventTargets = new Set();
+    const spy = {
+        createInstance(wiredEventTarget) {
+            wiredEventTargets.add(wiredEventTarget);
+        },
+        connect(wiredEventTarget) {
+            lastConfig = {};
+            wiredEventTargets.add(wiredEventTarget);
+        },
+        update(wiredEventTarget, config) {
+            lastConfig = config;
+        },
+        disconnect(wiredEventTarget) {
+            lastConfig = undefined;
+            wiredEventTargets.delete(wiredEventTarget);
         }
     };
 
-    register(adapterId, (wiredEventTarget) => {
-        add(wiredEventTargets, wiredEventTarget);
-
-        wiredEventTarget.addEventListener('connect', () => {
-            lastConfig = {};
-            add(wiredEventTargets, wiredEventTarget);
-        });
-
-        wiredEventTarget.addEventListener('disconnect', () => {
-            lastConfig = undefined;
-            const idx = wiredEventTargets.indexOf(wiredEventTarget);
-            if (idx > -1) {
-                wiredEventTargets.splice(idx, 1);
-            }
-        });
-
-        wiredEventTarget.addEventListener('config', (newConfig) => {
-            lastConfig = newConfig;
-        });
-    });
+    spyOnAdapter(spy, adapterId);
 
     return {
-        emit,
-        getLastConfig
+        emit(value) {
+            wiredEventTargets.forEach(wiredEventTarget => wiredEventTarget.emit(value));
+        },
+        getLastConfig() {
+            return lastConfig;
+        }
     };
 }

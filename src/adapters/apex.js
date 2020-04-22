@@ -4,85 +4,71 @@
  * SPDX-License-Identifier: MIT
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
  */
-import { register, ValueChangedEvent } from '@lwc/wire-service';
+import { spyOnAdapter } from "./utils";
 
 export default function createAdapter(adapterId) {
     let done = false;
     let lastConfig;
-    const wiredEventTargets = [];
-
-    const emit = (value) => {
-        if (!done) {
-            wiredEventTargets.forEach(wiredEventTarget => wiredEventTarget.dispatchEvent(new ValueChangedEvent({ data: value, error: undefined })));
-        }
-    };
-
-    const error = (body, status, statusText) => {
-        if (!done) {
-            done = true;
-
-            if (status && (status < 400 || status > 599)) {
-                throw new Error("'status' must be >= 400 or <= 599");
-            }
-
-            body = body || {
-                message: 'An internal server error has occurred',
-            };
-
-            status = status || 400;
-
-            statusText = statusText || 'Bad Request';
-
-            const err = {
-                body,
-                ok: false,
-                status,
-                statusText,
-            };
-
-            wiredEventTargets.forEach(wiredEventTarget => wiredEventTarget.dispatchEvent(new ValueChangedEvent({ data: undefined, error: err })));
-        }
-    };
-
-    const getLastConfig = () => {
-        return lastConfig;
-    };
-
-    const add = (arr, item) => {
-        const idx = arr.indexOf(item);
-        if (idx === -1) {
-            arr.push(item);
-        }
-    };
-
-    register(adapterId, (wiredEventTarget) => {
-        done = false;
-        add(wiredEventTargets, wiredEventTarget);
-        wiredEventTarget.dispatchEvent(new ValueChangedEvent({ data: undefined, error: undefined }));
-
-        wiredEventTarget.addEventListener('connect', () => {
+    const wiredEventTargets = new Set();
+    const spy = {
+        createInstance(wiredEventTarget) {
+            done = false;
+            wiredEventTargets.add(wiredEventTarget);
+            wiredEventTarget.emit({ data: undefined, error: undefined });
+        },
+        connect(wiredEventTarget) {
             done = false;
             lastConfig = {};
-            add(wiredEventTargets, wiredEventTarget);
-        });
-
-        wiredEventTarget.addEventListener('disconnect', () => {
+            wiredEventTargets.add(wiredEventTarget);
+        },
+        update(wiredEventTarget, config) {
+            lastConfig = config;
+        },
+        disconnect(wiredEventTarget) {
             done = true;
             lastConfig = undefined;
-            const idx = wiredEventTargets.indexOf(wiredEventTarget);
-            if (idx > -1) {
-                wiredEventTargets.splice(idx, 1);
-            }
-        });
+            wiredEventTargets.delete(wiredEventTarget);
+        }
+    };
 
-        wiredEventTarget.addEventListener('config', (newConfig) => {
-            lastConfig = newConfig;
-        });
-    });
+    spyOnAdapter(spy, adapterId);
 
     return {
-        emit,
-        error,
-        getLastConfig
+        emit(value) {
+            if (!done) {
+                wiredEventTargets.forEach(wiredEventTarget => wiredEventTarget.emit(value));
+            }
+        },
+        error(body, status, statusText) {
+            if (!done) {
+                done = true;
+
+                if (status && (status < 400 || status > 599)) {
+                    throw new Error("'status' must be >= 400 or <= 599");
+                }
+
+                body = body || {
+                    message: 'An internal server error has occurred',
+                };
+
+                status = status || 400;
+
+                statusText = statusText || 'Bad Request';
+
+                const err = {
+                    body,
+                    ok: false,
+                    status,
+                    statusText,
+                };
+
+                wiredEventTargets.forEach(
+                    wiredEventTarget => wiredEventTarget.emit({ data: undefined, error: err })
+                );
+            }
+        },
+        getLastConfig() {
+            return lastConfig;
+        }
     };
 }
