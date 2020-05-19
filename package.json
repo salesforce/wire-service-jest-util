@@ -25,6 +25,8 @@
     "@lwc/compiler": "^1.3.2",
     "@lwc/engine": "^1.3.2",
     "@lwc/jest-transformer": "^4.5.1",
+    "@lwc/jest-preset": "^4.5.1",
+    "lwc": "^1.3.2",
     "@lwc/wire-service": "^1.3.2",
     "@salesforce/eslint-config-lwc": "^0.5.0",
     "eslint": "^6.8.0",
