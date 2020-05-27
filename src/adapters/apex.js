@@ -36,7 +36,9 @@ export default function createAdapter(adapterId) {
     return {
         emit(value) {
             if (!done) {
-                wiredEventTargets.forEach(wiredEventTarget => wiredEventTarget.emit(value));
+                wiredEventTargets.forEach(
+                    wiredEventTarget => wiredEventTarget.emit({ data: value, error: undefined })
+                );
             }
         },
         error(body, status, statusText) {
