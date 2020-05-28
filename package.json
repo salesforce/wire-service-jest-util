@@ -1,6 +1,6 @@
 {
   "name": "@salesforce/wire-service-jest-util",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "description": "Utility library emit test data through @wire adapters in Lightning web component tests",
   "license": "MIT",
   "main": "dist/wire-service-jest-util.common.js",
