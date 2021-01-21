@@ -1025,7 +1025,7 @@
     "@lwc/errors" "1.11.3"
     line-column "~1.0.2"
 
-"@lwc/compiler@1.11.3":
+"@lwc/compiler@^1.11.3":
   version "1.11.3"
   resolved "https://registry.yarnpkg.com/@lwc/compiler/-/compiler-1.11.3.tgz#a37efd9b5ea98c793da8c4854a291b5f328b9ef0"
   integrity sha512-+dudc3w/m9SXVyRbqivCFAXztIYjbCMtswCbv9wA45yF/5FYPu1Y/VCniIrQqACteVEgf3GhSfBt4bJTP2MhjQ==
@@ -1043,12 +1043,7 @@
     rollup "~2.36.0"
     terser "~5.5.1"
 
-"@lwc/engine-server@1.11.3":
-  version "1.11.3"
-  resolved "https://registry.yarnpkg.com/@lwc/engine-server/-/engine-server-1.11.3.tgz#85a4262619f417d37b3bdfb17ef8f570cea33774"
-  integrity sha512-vuqUUp41kuHdmkvtJStSFiYcVDy08U9mkBrZy2xOTN3MsBVh8jBk6Iv5PYhNgIistP1v5vK1HJSkPaGi/U40DQ==
-
-"@lwc/engine@1.11.3":
+"@lwc/engine@^1.11.3":
   version "1.11.3"
   resolved "https://registry.yarnpkg.com/@lwc/engine/-/engine-1.11.3.tgz#3f845169e87d6e0227a26b2410e48267abaa79ae"
   integrity sha512-jt3YobQedkWuVPVcgE3zazJ907seYz+Y3IuWFm+Ov+UTBUq/yS4ZUkV9vEyvWH/8cUoNDHabmqEVsyXxOFHHwQ==
@@ -1062,11 +1057,6 @@
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/@lwc/eslint-plugin-lwc/-/eslint-plugin-lwc-0.9.0.tgz#f6765536a521f2da0e3d6a47cb6b78f2cc319d9e"
   integrity sha512-JKcyZICV2V/IhWhNqHUXXIk5eD8ZYCkGmxfbt/FPaYS2e363yLi7zlhzQlopxduq2LbcQjQKKrJRBhYcjTC++A==
-
-"@lwc/features@1.11.3":
-  version "1.11.3"
-  resolved "https://registry.yarnpkg.com/@lwc/features/-/features-1.11.3.tgz#b138c63a0890ea436247f3142565505b8fba3da0"
-  integrity sha512-jzHpBXFcKNjCagF+aporisPykok57RZR6qJRUAvyRF6El2CeQs6KS/DPdg9t4Fm/aWj9K5R8f865Di7J02RQog==
 
 "@lwc/jest-preset@^9.0.0":
   version "9.0.0"
@@ -1120,7 +1110,7 @@
     postcss-selector-parser "~6.0.4"
     postcss-value-parser "~4.1.0"
 
-"@lwc/synthetic-shadow@1.11.3":
+"@lwc/synthetic-shadow@^1.11.3":
   version "1.11.3"
   resolved "https://registry.yarnpkg.com/@lwc/synthetic-shadow/-/synthetic-shadow-1.11.3.tgz#35537a4b53aee6e8b1666b7fca33408eca25c434"
   integrity sha512-mZS5wIYU14hBURTw38wuq4U+jAg9zBahRNOf3uC+0c77dI7GKRlxStW+aS80Mb7OdMBLBHsFh+p68r2iP7/fng==
@@ -1141,11 +1131,6 @@
     esutils "~2.0.3"
     he "~1.2.0"
     parse5-with-errors "~4.0.4"
-
-"@lwc/wire-service@1.11.3":
-  version "1.11.3"
-  resolved "https://registry.yarnpkg.com/@lwc/wire-service/-/wire-service-1.11.3.tgz#57341c5ac5d57f3dce07f60bcf9e9cf22cf8d76e"
-  integrity sha512-mOsRLKhhNJoADmQJi0vd/OXqiOPZg0aKuRHBTW7pKfK6SkmWKhK15fe32tbFvSvdrxrJUS8tB6gXrZX3hhtxoA==
 
 "@rollup/plugin-replace@~2.3.4":
   version "2.3.4"
@@ -4035,18 +4020,6 @@ lodash@^4.17.14, lodash@^4.17.15:
   version "4.17.19"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
   integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
-
-lwc@^1.11.3:
-  version "1.11.3"
-  resolved "https://registry.yarnpkg.com/lwc/-/lwc-1.11.3.tgz#fc4178dedd13de904a2fc15e0c02f394b4a25c9a"
-  integrity sha512-TwgsnVy2GyJFXoLGKv8gUwAAgOBMkcQdLS1Dg2XkTeCzuKXY8dxYTy2NjqIf5J7prBRQZHOBhPLRS6AgMkOpgg==
-  dependencies:
-    "@lwc/compiler" "1.11.3"
-    "@lwc/engine" "1.11.3"
-    "@lwc/engine-server" "1.11.3"
-    "@lwc/features" "1.11.3"
-    "@lwc/synthetic-shadow" "1.11.3"
-    "@lwc/wire-service" "1.11.3"
 
 magic-string@^0.25.7:
   version "0.25.7"

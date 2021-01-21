@@ -23,12 +23,14 @@
   ],
   "repository": "https://github.com/salesforce/wire-service-jest-util",
   "devDependencies": {
+    "@lwc/compiler": "^1.11.3",
+    "@lwc/engine": "^1.11.3",
+    "@lwc/synthetic-shadow": "^1.11.3",
     "@lwc/jest-preset": "^9.0.0",
     "@salesforce/eslint-config-lwc": "^0.5.0",
     "eslint": "^6.8.0",
     "isbinaryfile": "^4.0.6",
     "jest": "^26.0.1",
-    "lwc": "^1.11.3",
     "rimraf": "^3.0.2",
     "rollup": "^2.11.2"
   },
