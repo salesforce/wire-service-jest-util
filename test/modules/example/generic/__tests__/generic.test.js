@@ -22,16 +22,17 @@ describe('example-generic', () => {
         describe('getLastConfig()', () => {
             it('should return last available config', () => {
                 const element = createElement('example-generic', { is: Generic });
+                element.param = 'v1';
                 document.body.appendChild(element);
 
                 return Promise.resolve()
                     .then(() => {
-                        expect(testWireAdapter.getLastConfig()).toStrictEqual({});
+                        expect(testWireAdapter.getLastConfig()).toStrictEqual({ p: 'v1' });
 
-                        element.param = 'v1';
+                        element.param = 'v2';
                     })
                     .then(() => {
-                        expect(testWireAdapter.getLastConfig()).toStrictEqual({ p: "v1" });
+                        expect(testWireAdapter.getLastConfig()).toStrictEqual({ p: 'v2' });
                     });
             });
         });

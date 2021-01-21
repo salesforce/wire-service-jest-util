@@ -22,16 +22,17 @@ describe('example-apex', () => {
         describe('getLastConfig()', () => {
             it('should return last available config', () => {
                 const element = createElement('example-apex', { is: Apex });
+                element.param = 'v1';
                 document.body.appendChild(element);
 
                 return Promise.resolve()
                     .then(() => {
-                        expect(apexMethodAdapter.getLastConfig()).toStrictEqual({});
+                        expect(apexMethodAdapter.getLastConfig()).toStrictEqual({ p: 'v1'});
 
-                        element.param = 'v1';
+                        element.param = 'v2';
                     })
                     .then(() => {
-                        expect(apexMethodAdapter.getLastConfig()).toStrictEqual({ p: "v1" });
+                        expect(apexMethodAdapter.getLastConfig()).toStrictEqual({ p: 'v2' });
                     });
             });
         });
