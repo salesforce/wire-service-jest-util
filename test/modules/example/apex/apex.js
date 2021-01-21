@@ -8,7 +8,8 @@ import { LightningElement, api, wire } from 'lwc';
 import ApexMethod from '@salesforce/apex/FooClass.FooMethod';
 
 export default class Apex extends LightningElement {
-    @wire(ApexMethod) wiredValue;
+    @api param;
+    @wire(ApexMethod, { p: '$param' }) wiredValue;
 
     @api
     getWiredValue() {
