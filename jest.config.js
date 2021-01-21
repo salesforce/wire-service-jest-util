@@ -9,11 +9,10 @@
 module.exports = {
     preset: '@lwc/jest-preset',
     moduleNameMapper: {
-        '^lwc-wire-service$': require.resolve('@lwc/wire-service'),
-        '^lwc-engine$': require.resolve('@lwc/engine'),
-        '^(example)/(.+)$': '<rootDir>/src/test/modules/$1/$2/$2',
+        '@salesforce/wire-service-jest-util': '<rootDir>/src/',
+        '^(example)/(.+)$': '<rootDir>/test/modules/$1/$2/$2',
     },
-    collectCoverageFrom: ['src/*.js', '!**/__tests__/**'],
+    collectCoverageFrom: ['src/**', '!**/__tests__/**'],
     coverageReporters: ['text', 'text-summary'],
     coverageThreshold: {
         global: {
