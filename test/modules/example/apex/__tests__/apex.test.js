@@ -7,7 +7,7 @@
 import { createElement } from 'lwc';
 import ApexMethod from '@salesforce/apex/FooClass.FooMethod';
 import Apex from 'example/apex';
-import { registerApexTestWireAdapter } from '../../../../../src';
+import { registerApexTestWireAdapter } from '@salesforce/wire-service-jest-util';
 
 const apexMethodAdapter = registerApexTestWireAdapter(ApexMethod);
 

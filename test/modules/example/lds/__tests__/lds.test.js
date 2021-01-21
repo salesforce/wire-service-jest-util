@@ -7,7 +7,7 @@
 import { createElement } from 'lwc';
 import { ldsAdapter } from 'example/adapters';
 import Lds from 'example/lds';
-import { registerLdsTestWireAdapter } from '../../../../../src';
+import { registerLdsTestWireAdapter } from '@salesforce/wire-service-jest-util';
 
 const ldsTestWireAdapter = registerLdsTestWireAdapter(ldsAdapter);
 

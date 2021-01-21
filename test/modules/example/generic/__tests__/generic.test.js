@@ -7,7 +7,7 @@
 import { createElement } from 'lwc';
 import { testAdapter } from 'example/adapters';
 import Generic from 'example/generic';
-import { registerTestWireAdapter } from '../../../../../src';
+import { registerTestWireAdapter } from '@salesforce/wire-service-jest-util';
 
 const testWireAdapter = registerTestWireAdapter(testAdapter);
 
