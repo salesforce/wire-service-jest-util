@@ -9,8 +9,8 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "yarn.lock" }}
-          - v1-dependencies-
+          - v2-dependencies-{{ checksum "yarn.lock" }}
+          - v2-dependencies-
 
       - run: yarn install --frozen-lock
 
