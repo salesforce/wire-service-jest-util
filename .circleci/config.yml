@@ -12,8 +12,6 @@ jobs:
           - v1-dependencies-{{ checksum "yarn.lock" }}
           - v1-dependencies-
 
-      - run: rm -rf node_modules/
-
       - run: yarn install --frozen-lock
 
       - save_cache:
