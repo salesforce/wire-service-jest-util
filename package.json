@@ -22,6 +22,9 @@
     "testing"
   ],
   "repository": "https://github.com/salesforce/wire-service-jest-util",
+  "peerDependencies": {
+    "@lwc/engine": "^1.5.0"
+  },
   "devDependencies": {
     "@lwc/compiler": "^1.11.3",
     "@lwc/engine": "^1.11.3",
