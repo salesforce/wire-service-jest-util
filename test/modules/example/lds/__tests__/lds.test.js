@@ -22,16 +22,17 @@ describe('example-lds', () => {
         describe('getLastConfig()', () => {
             it('should return last available config', () => {
                 const element = createElement('example-lds', { is: Lds });
+                element.param = 'v1';
                 document.body.appendChild(element);
 
                 return Promise.resolve()
                     .then(() => {
-                        expect(ldsTestWireAdapter.getLastConfig()).toStrictEqual({});
+                        expect(ldsTestWireAdapter.getLastConfig()).toStrictEqual({ p: 'v1'});
 
-                        element.param = 'v1';
+                        element.param = 'v2';
                     })
                     .then(() => {
-                        expect(ldsTestWireAdapter.getLastConfig()).toStrictEqual({ p: "v1" });
+                        expect(ldsTestWireAdapter.getLastConfig()).toStrictEqual({ p: 'v2' });
                     });
             });
         });
