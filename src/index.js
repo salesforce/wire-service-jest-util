@@ -28,7 +28,7 @@ function isWireAdapterMock(adapter) {
 function registerLdsTestWireAdapter(identifier) {
     validateAdapterId(identifier);
 
-    console.warn("registerLdsTestWireAdapter is deprecated. Mock your wire adapters with createLdsWireAdapterMock instead.");
+    console.warn("registerLdsTestWireAdapter is deprecated. Mock your wire adapters with createLdsTestWireAdapter instead.");
 
     if (!isWireAdapterMock(identifier)) {
         const spy = new LdsWireAdapterObserver();
@@ -47,7 +47,7 @@ function registerLdsTestWireAdapter(identifier) {
 function registerApexTestWireAdapter(identifier) {
     validateAdapterId(identifier);
 
-    console.warn("registerApexTestWireAdapter is deprecated. Mock your wire adapters with createLdsWireAdapterMock instead.");
+    console.warn("registerApexTestWireAdapter is deprecated. Mock your wire adapters with createLdsTestWireAdapter instead.");
 
     if (!isWireAdapterMock(identifier)) {
         const spy = new ApexWireAdapterObserver();
@@ -66,7 +66,7 @@ function registerApexTestWireAdapter(identifier) {
 function registerTestWireAdapter(identifier) {
     validateAdapterId(identifier);
 
-    console.warn("registerTestWireAdapter is deprecated. Mock your wire adapters with createLdsWireAdapterMock instead.");
+    console.warn("registerTestWireAdapter is deprecated. Mock your wire adapters with createLdsTestWireAdapter instead.");
 
     if (!isWireAdapterMock(identifier)) {
         const spy = new TestWireAdapterObserver();
@@ -99,22 +99,22 @@ function createWireAdapterMock(fn, adapterObserver) {
     return adapterMock;
 }
 
-function createApexWireAdapterMock(fn) {
+function createApexTestWireAdapter(fn) {
     return createWireAdapterMock(fn, new ApexWireAdapterObserver());
 }
 
-function createLdsWireAdapterMock(fn) {
+function createLdsTestWireAdapter(fn) {
     return createWireAdapterMock(fn, new LdsWireAdapterObserver());
 }
 
-function createTestWireAdapterMock(fn) {
+function createTestWireAdapter(fn) {
     return createWireAdapterMock(fn, new TestWireAdapterObserver());
 }
 
 export {
-    createApexWireAdapterMock,
-    createLdsWireAdapterMock,
-    createTestWireAdapterMock,
+    createApexTestWireAdapter,
+    createLdsTestWireAdapter,
+    createTestWireAdapter,
 
     registerLdsTestWireAdapter,
     registerApexTestWireAdapter,

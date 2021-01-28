@@ -17,7 +17,7 @@ afterEach(() => {
 
 const cases = [
     {
-        testName: 'new api (via createTestWireAdapterMock)',
+        testName: 'new api (via createTestWireAdapter)',
         adapter: testAdapterMock,
         adapterName: 'testAdapterMock',
     },
@@ -43,7 +43,7 @@ describe('registerTestWireAdapter', () => {
         const consoleWarnSpy = jest.spyOn(console, 'warn');
 
         registerTestWireAdapter(testAdapter);
-        expect(consoleWarnSpy).toHaveBeenCalledWith('registerTestWireAdapter is deprecated. Mock your wire adapters with createLdsWireAdapterMock instead.');
+        expect(consoleWarnSpy).toHaveBeenCalledWith('registerTestWireAdapter is deprecated. Mock your wire adapters with createLdsTestWireAdapter instead.');
 
         consoleWarnSpy.mockRestore();
     });

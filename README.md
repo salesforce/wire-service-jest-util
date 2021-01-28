@@ -17,17 +17,20 @@ export default class MyComponent extends LightningElement {
 
 You'd like to test the component's handling of `@wire` data and errors. This test utility makes it trivial.
 
+Mock the `getTodo` wire adapter.
+
+```js
+import { createTestWireAdapter } from '@salesforce/wire-service-jest-util';
+
+export const getTodo = createTestWireAdapter();
+```
+
  ```js
 import { createElement } from 'lwc';
-import { registerTestWireAdapter } from '@salesforce/wire-service-jest-util';
 import MyComponent from 'x/myComponent';
 
 // adapter identifier used by the component under test
 import { getTodo } from 'x/todoApi';
-
-// **IMPORTANT** call the register API before creating the component under test
-// register a test wire adapter to control @wire(getTodo)
-const getTodoWireAdapter = registerTestWireAdapter(getTodo);
 
 describe('@wire demonstration test', () => {
 
@@ -46,7 +49,7 @@ describe('@wire demonstration test', () => {
 
         // act: have @wire(getTodo) provision a value
         const data = { 'userId': 1, 'id': 1, 'title': 'delectus aut autem', 'completed': false };
-        getTodoWireAdapter.emit(data);
+        getTodo.emit(data);
 
         // assert: verify component behavior having received @wire(getTodo)
     });
@@ -65,11 +68,13 @@ There are three flavors of test adapters: Lightning Data Service (LDS), Apex, an
 
 ```js
 /**
- * Registers a wire adapter that mimics Lightning Data Service (LDS) adapters behavior,
- * and emitted data and error shapes. For example, the emitted shape is
+ * Returns a wire adapter mock that mimics Lightning Data Service (LDS) adapters behavior,
+ * emitted data and error shapes. For example, the emitted shape is
  * `{ data: object|undefined, error: FetchResponse|undefined}`.
+ *
+ * @param {Function} This parameter might be used to implement adapters that can be invoked imperatively (like the Apex one).
  */
-registerLdsTestWireAdapter(identifier: any): LdsTestWireAdapter;
+createLdsTestWireAdapter(fn: Function): LdsTestWireAdapter;
 
 interface LdsTestWireAdapter {
     /** Emits data. */
@@ -105,11 +110,14 @@ interface FetchResponse {
 }
 
 /**
- * Registers a wire adapter that connects to an Apex method and provides APIs
+ * Returns a wire adapter that connects to an Apex method and provides APIs
  * to emit data and errors in the expected shape. For example, the emitted shape
  * is `{ data: object|undefined, error: FetchResponse|undefined}`.
+ *
+ * @param {Function} An apex adapters are also callable, this function will be called
+ *                   when the wire adapter is invoked imperatively.
  */
-registerApexTestWireAdapter(identifier: any): ApexTestWireAdapter;
+createApexTestWireAdapter(fn: Function): ApexTestWireAdapter;
 
 interface ApexTestWireAdapter {
     /** Emits data. */
@@ -144,10 +152,12 @@ interface FetchResponse {
 }
 
 /**
- * Registers a generic wire adapter for the given identifier. Emitted values may be of
+ * Returns a generic wire adapter for the given identifier. Emitted values may be of
  * any shape.
+ *
+ * @param {Function} This parameter might be used to implement adapters that can be invoked imperatively (like the Apex one).
  */
-registerTestWireAdapter(identifier: any): TestWireAdapter;
+createTestWireAdapter(identifier: Function): TestWireAdapter;
 
 interface TestWireAdapter {
     /** Emits any value of any shape. */
@@ -160,3 +170,36 @@ interface TestWireAdapter {
     getLastConfig(): object
 }
 ```
+
+## Migrating from version 2.x to 3.x
+
+LWC version 1.5.0 includes a [reform to the wire protocol](https://github.com/salesforce/lwc-rfcs/blob/master/text/0000-wire-reform.md). With such reform, the wire-service now requires a wire-adapter in the proper format.
+
+In version 2.x of the library, you may be using a custom mock, for example for `lightning/navigation`:
+```js
+export const CurrentPageReference = jest.fn();
+// ... rest of the mocked module.
+```
+
+You will need to change that module mock and use one of the new `create*WireAdapterMock` methods introduced in version 3.x. Example:
+
+```js
+import { createTestWireAdapter } from '@salesforce/wire-service-jest-utils';
+export const CurrentPageReference = createTestWireAdapter();
+// ... rest of the mocked module
+```
+
+### FAQ
+
+- I'm on platform (sfdx) and I don't have any custom mocks for modules exposing wire adapters, should I do anything?
+
+No, all exposed modules in the platform are mocked for you.
+
+- I'm on platform, and I have custom mocks for some modules exposing wire adapters, what should I do?
+
+If you are on platform, we already provide those mocks for you, removing your custom mocks should be enough. If you want to keep your custom mocks, follow the steps in [Migrating from version 2.x to 3.x](#migrating-from-version-2x-to-3x).
+
+- I'm off platform, what should i do?
+
+Follow the steps in [Migrating from version 2.x to 3.x](#migrating-from-version-2x-to-3x).
+
