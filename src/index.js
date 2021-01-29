@@ -66,7 +66,7 @@ function registerApexTestWireAdapter(identifier) {
 function registerTestWireAdapter(identifier) {
     validateAdapterId(identifier);
 
-    console.warn("registerTestWireAdapter is deprecated. Mock your wire adapters with createLdsTestWireAdapter instead.");
+    console.warn("registerTestWireAdapter is deprecated. Mock your wire adapters with createTestWireAdapter instead.");
 
     if (!isWireAdapterMock(identifier)) {
         const spy = new TestWireAdapterObserver();
