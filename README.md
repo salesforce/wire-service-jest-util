@@ -181,7 +181,7 @@ export const CurrentPageReference = jest.fn();
 // ... rest of the mocked module.
 ```
 
-You will need to change that module mock and use one of the new `create*WireAdapterMock` methods introduced in version 3.x. Example:
+You will need to change that module mock and use one of the new `create*TestWireAdapter` methods introduced in version 3.x. Example:
 
 ```js
 import { createTestWireAdapter } from '@salesforce/wire-service-jest-utils';
@@ -202,4 +202,3 @@ If you are on platform, we already provide those mocks for you, removing your cu
 - I'm off platform, what should i do?
 
 Follow the steps in [Migrating from version 2.x to 3.x](#migrating-from-version-2x-to-3x).
-
