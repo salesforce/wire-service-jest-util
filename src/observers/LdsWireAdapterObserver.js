@@ -12,8 +12,8 @@ export class LdsWireAdapterObserver extends TestWireAdapterObserver {
         instance.emit({ data: undefined, error: undefined });
     }
 
-    emit(value) {
-        super.emit({ data: value, error: undefined });
+    emit(value, filterFn) {
+        super.emit({ data: value, error: undefined }, filterFn);
     }
 
     error(body, status, statusText) {

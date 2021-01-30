@@ -25,11 +25,14 @@ export class TestWireAdapterObserver {
         this.wiredInstances.delete(instance);
     }
 
-    emit(value) {
-        // @todo: add filter by config.
-        this.wiredInstances.forEach((instance) => {
-            instance.emit(value);
-        })
+    emit(value, filterFn) {
+        let instances = Array.from(this.wiredInstances);
+
+        if (typeof filterFn === 'function') {
+            instances = instances.filter((instance) => filterFn(instance.getConfig()));
+        }
+
+        instances.forEach((instance) => instance.emit(value));
     }
 
     getLastConfig() {

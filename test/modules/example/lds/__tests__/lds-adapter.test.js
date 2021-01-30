@@ -49,6 +49,36 @@ describe('registerLdsTestWireAdapter', () => {
     });
 });
 
+describe('createLdsTestWireAdapter', () => {
+    describe('emit()', () => {
+        it('should emit values to all wire instances when no filter function is specified', () => {
+            const element = createElement('example-lds', { is: Lds });
+            document.body.appendChild(element);
+
+            return Promise.resolve().then(() => {
+                const mockedValue = { foo: 'bar' };
+                ldsAdapterMock.emit(mockedValue);
+
+                expect(element.getWiredValue('ldsAdapterMock').data).toBe(mockedValue);
+                expect(element.getWiredValue('ldsAdapterMockSecondUsage').data).toBe(mockedValue);
+            });
+        });
+
+        it('should emit values only to those instances with specific config', () => {
+            const element = createElement('example-lds', { is: Lds });
+            document.body.appendChild(element);
+
+            return Promise.resolve().then(() => {
+                const mockedValue = { foo: 'bar' };
+                ldsAdapterMock.emit(mockedValue, (config) => config.p2 === 'second');
+
+                expect(element.getWiredValue('ldsAdapterMock').data).not.toBe(mockedValue);
+                expect(element.getWiredValue('ldsAdapterMockSecondUsage').data).toBe(mockedValue);
+            });
+        });
+    })
+});
+
 describe('LdsTestWireAdapter', () => {
     cases.forEach(({ testName, adapter, adapterName}) => {
         describe(testName, ()=> {
@@ -61,12 +91,12 @@ describe('LdsTestWireAdapter', () => {
 
                     return Promise.resolve()
                         .then(() => {
-                            expect(adapter.getLastConfig()).toStrictEqual({ p: 'v1' });
+                            expect(adapter.getLastConfig().p).toStrictEqual('v1');
 
                             element.param = 'v2';
                         })
                         .then(() => {
-                            expect(adapter.getLastConfig()).toStrictEqual({ p: 'v2' });
+                            expect(adapter.getLastConfig().p).toStrictEqual('v2');
                         });
                 });
             });

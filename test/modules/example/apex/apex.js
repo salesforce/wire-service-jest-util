@@ -11,6 +11,7 @@ import LegacyApexMethod from '@salesforce/apex/Apex.LegacyApexMethod';
 export default class Apex extends LightningElement {
     @api param;
     @wire(ApexMethod, { p: '$param' }) ApexMethodValue;
+    @wire(ApexMethod, { p: '$param', p2: 'second' }) ApexMethodSecondUsageValue;
     @wire(LegacyApexMethod, { p: '$param' }) LegacyApexMethodValue;
 
     @api

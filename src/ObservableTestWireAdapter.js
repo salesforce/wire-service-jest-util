@@ -32,4 +32,8 @@ export class ObservableTestWireAdapter {
     emit(value) {
         this._dataCallback(value);
     }
+
+    getConfig() {
+        return this.config;
+    }
 }

@@ -13,6 +13,7 @@ export default class Generic extends LightningElement {
     @wire(testAdapter, { p: '$param' }) testAdapterValue;
     @wire(testAdapterLegacyMock, { p: '$param' }) testAdapterLegacyMockValue;
     @wire(testAdapterMock, { p: '$param' }) testAdapterMockValue;
+    @wire(testAdapterMock, { p: '$param', p2: 'second' }) testAdapterMockSecondUsageValue;
 
     @api
     getWiredValue(adapter) {

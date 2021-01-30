@@ -12,6 +12,7 @@ export default class Lds extends LightningElement {
     @wire(ldsAdapter, { p: '$param' }) ldsAdapterValue;
     @wire(ldsAdapterLegacyMock, { p: '$param' }) ldsAdapterLegacyMockValue;
     @wire(ldsAdapterMock, { p: '$param' }) ldsAdapterMockValue;
+    @wire(ldsAdapterMock, { p: '$param', p2: 'second' }) ldsAdapterMockSecondUsageValue;
 
     @api
     getWiredValue(adapter) {

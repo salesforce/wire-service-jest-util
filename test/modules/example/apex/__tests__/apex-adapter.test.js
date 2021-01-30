@@ -45,10 +45,40 @@ describe('registerApexTestWireAdapter', () => {
         const consoleWarnSpy = jest.spyOn(console, 'warn');
 
         registerApexTestWireAdapter(ApexMethod);
-        expect(consoleWarnSpy).toHaveBeenCalledWith('registerApexTestWireAdapter is deprecated. Mock your wire adapters with createLdsTestWireAdapter instead.');
+        expect(consoleWarnSpy).toHaveBeenCalledWith('registerApexTestWireAdapter is deprecated. Mock your wire adapters with createApexTestWireAdapter instead.');
 
         consoleWarnSpy.mockRestore();
     });
+});
+
+describe('createLdsTestWireAdapter', () => {
+    describe('emit()', () => {
+        it('should emit values to all wire instances when no filter function is specified', () => {
+            const element = createElement('example-apex', { is: Apex });
+            document.body.appendChild(element);
+
+            return Promise.resolve().then(() => {
+                const mockedValue = { foo: 'bar' };
+                ApexMethod.emit(mockedValue);
+
+                expect(element.getWiredValue('ApexMethod').data).toBe(mockedValue);
+                expect(element.getWiredValue('ApexMethodSecondUsage').data).toBe(mockedValue);
+            });
+        });
+
+        it('should emit values only to those instances with specific config', () => {
+            const element = createElement('example-apex', { is: Apex });
+            document.body.appendChild(element);
+
+            return Promise.resolve().then(() => {
+                const mockedValue = { foo: 'bar' };
+                ApexMethod.emit(mockedValue, (config) => config.p2 === 'second');
+
+                expect(element.getWiredValue('ApexMethod').data).not.toBe(mockedValue);
+                expect(element.getWiredValue('ApexMethodSecondUsage').data).toBe(mockedValue);
+            });
+        });
+    })
 });
 
 describe('ApexTestWireAdapter', () => {
@@ -63,12 +93,12 @@ describe('ApexTestWireAdapter', () => {
 
                     return Promise.resolve()
                         .then(() => {
-                            expect(adapter.getLastConfig()).toStrictEqual({ p: 'v1'});
+                            expect(adapter.getLastConfig().p).toBe('v1');
 
                             element.param = 'v2';
                         })
                         .then(() => {
-                            expect(adapter.getLastConfig()).toStrictEqual({ p: 'v2' });
+                            expect(adapter.getLastConfig().p).toBe('v2');
                         });
                 });
             });
