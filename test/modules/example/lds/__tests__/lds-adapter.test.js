@@ -43,7 +43,7 @@ describe('registerLdsTestWireAdapter', () => {
         const consoleWarnSpy = jest.spyOn(console, 'warn');
 
         registerLdsTestWireAdapter(ldsAdapter);
-        expect(consoleWarnSpy).toHaveBeenCalledWith('registerLdsTestWireAdapter is deprecated. Mock your wire adapters with createLdsTestWireAdapter instead.');
+        expect(consoleWarnSpy).toHaveBeenCalledWith('registerLdsTestWireAdapter is deprecated. More details: https://github.com/salesforce/wire-service-jest-util/blob/master/README.md##migrating-from-version-2x-to-3x.');
 
         consoleWarnSpy.mockRestore();
     });

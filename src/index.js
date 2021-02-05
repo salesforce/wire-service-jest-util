@@ -11,6 +11,11 @@ import { TestWireAdapterObserver } from "./observers/TestWireAdapterObserver";
 import { registerAdapter } from "./utils";
 
 const WIRE_ADAPTER_MOCK_MARK = '$wire_adapter_mock$';
+const MIGRATION_LINK = 'https://github.com/salesforce/wire-service-jest-util/blob/master/README.md##migrating-from-version-2x-to-3x.';
+
+function getMigrationMessageFor(registerFnName) {
+    return `${registerFnName} is deprecated. More details: ${MIGRATION_LINK}`;
+}
 
 function validateAdapterId(adapterId) {
     if (!adapterId) {
@@ -28,7 +33,7 @@ function isWireAdapterMock(adapter) {
 function registerLdsTestWireAdapter(identifier) {
     validateAdapterId(identifier);
 
-    console.warn("registerLdsTestWireAdapter is deprecated. Mock your wire adapters with createLdsTestWireAdapter instead.");
+    console.warn(getMigrationMessageFor('registerLdsTestWireAdapter'));
 
     if (!isWireAdapterMock(identifier)) {
         const spy = new LdsWireAdapterObserver();
@@ -47,7 +52,7 @@ function registerLdsTestWireAdapter(identifier) {
 function registerApexTestWireAdapter(identifier) {
     validateAdapterId(identifier);
 
-    console.warn("registerApexTestWireAdapter is deprecated. Mock your wire adapters with createApexTestWireAdapter instead.");
+    console.warn(getMigrationMessageFor('registerApexTestWireAdapter'));
 
     if (!isWireAdapterMock(identifier)) {
         const spy = new ApexWireAdapterObserver();
@@ -66,7 +71,7 @@ function registerApexTestWireAdapter(identifier) {
 function registerTestWireAdapter(identifier) {
     validateAdapterId(identifier);
 
-    console.warn("registerTestWireAdapter is deprecated. Mock your wire adapters with createTestWireAdapter instead.");
+    console.warn(getMigrationMessageFor('registerTestWireAdapter'));
 
     if (!isWireAdapterMock(identifier)) {
         const spy = new TestWireAdapterObserver();

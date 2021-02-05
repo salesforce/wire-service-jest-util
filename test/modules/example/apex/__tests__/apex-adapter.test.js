@@ -45,7 +45,7 @@ describe('registerApexTestWireAdapter', () => {
         const consoleWarnSpy = jest.spyOn(console, 'warn');
 
         registerApexTestWireAdapter(ApexMethod);
-        expect(consoleWarnSpy).toHaveBeenCalledWith('registerApexTestWireAdapter is deprecated. Mock your wire adapters with createApexTestWireAdapter instead.');
+        expect(consoleWarnSpy).toHaveBeenCalledWith('registerApexTestWireAdapter is deprecated. More details: https://github.com/salesforce/wire-service-jest-util/blob/master/README.md##migrating-from-version-2x-to-3x.');
 
         consoleWarnSpy.mockRestore();
     });

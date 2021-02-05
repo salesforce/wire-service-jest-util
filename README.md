@@ -17,7 +17,7 @@ export default class MyComponent extends LightningElement {
 
 You'd like to test the component's handling of `@wire` data and errors. This test utility makes it trivial.
 
-Mock the `getTodo` wire adapter.
+Create a mock/stub of the `x/todoApi` module, and use `createTestWireAdapter` from `@salesforce/wire-service-jest-util` to create a test wire adapter, `getTodo`.
 
 ```js
 import { createTestWireAdapter } from '@salesforce/wire-service-jest-util';
@@ -25,11 +25,13 @@ import { createTestWireAdapter } from '@salesforce/wire-service-jest-util';
 export const getTodo = createTestWireAdapter();
 ```
 
+Then in your test, import the adapter to emit the data:
+
  ```js
 import { createElement } from 'lwc';
 import MyComponent from 'x/myComponent';
 
-// adapter identifier used by the component under test
+// adapter used by the component under test
 import { getTodo } from 'x/todoApi';
 
 describe('@wire demonstration test', () => {
@@ -58,7 +60,7 @@ describe('@wire demonstration test', () => {
 
 ## Overview
 
-The utility works by allowing component unit tests to register a wire adapter for an arbitrary identifier. Registration returns a test adapter which has the ability to emit data and get the last resolved `@wire` configuration.
+This library provides three utility methods to create test wire adapters used in the tests to emit data and get the last resolved `@wire` configuration.
 
 ### Adapter Types
 
@@ -77,8 +79,14 @@ There are three flavors of test adapters: Lightning Data Service (LDS), Apex, an
 createLdsTestWireAdapter(fn: Function): LdsTestWireAdapter;
 
 interface LdsTestWireAdapter {
-    /** Emits data. */
-    emit(value: object): void;
+    /**
+     * Emits data.
+     * @param value The data to emit to the component
+     * @param filterFn When provided, it will be invoked for every adapter instance on the
+     *                 component with its associated config; if it returns true, the data will be
+     *                 emitted to that particular instance.
+     */
+    emit(value: object, filterFn?: (config) => boolean): void;
 
     /**
      * Emits an error. By default this will emit a resource not found error.
@@ -120,8 +128,14 @@ interface FetchResponse {
 createApexTestWireAdapter(fn: Function): ApexTestWireAdapter;
 
 interface ApexTestWireAdapter {
-    /** Emits data. */
-    emit(value: object): void;
+    /**
+     * Emits data.
+     * @param value The data to emit to the component
+     * @param filterFn When provided, it will be invoked for every adapter instance on the
+     *                 component with its associated config; if it returns true, the data will be
+     *                 emitted to that particular instance.
+     */
+    emit(value: object, filterFn?: (config) => boolean): void;
 
     /**
      * Emits an error. By default this will emit a resource not found error.
@@ -160,8 +174,14 @@ interface FetchResponse {
 createTestWireAdapter(identifier: Function): TestWireAdapter;
 
 interface TestWireAdapter {
-    /** Emits any value of any shape. */
-    emit(value: any): void;
+    /**
+     * Emits any value of any shape.
+     * @param value The value to emit to the component
+     * @param filterFn When provided, it will be invoked for every adapter instance on the
+     *                 component with its associated config; if it returns true, the value will be
+     *                 emitted to that particular instance.
+     */
+    emit(value: object, filterFn?: (config) => boolean): void;
 
     /**
      * Gets the last resolved config. Useful if component @wire uses includes
@@ -173,11 +193,12 @@ interface TestWireAdapter {
 
 ## Migrating from version 2.x to 3.x
 
+### Mock your modules exporting wire adapters
 LWC version 1.5.0 includes a [reform to the wire protocol](https://github.com/salesforce/lwc-rfcs/blob/master/text/0000-wire-reform.md). With such reform, the wire-service now requires a wire-adapter in the proper format.
 
-In version 2.x of the library, you may be using a custom mock, for example for `lightning/navigation`:
+In version 2.x of the library, you may be using a custom mock, for example for `lightning/uiRecordApi`:
 ```js
-export const CurrentPageReference = jest.fn();
+export const getRecord = jest.fn();
 // ... rest of the mocked module.
 ```
 
@@ -185,9 +206,113 @@ You will need to change that module mock and use one of the new `create*TestWire
 
 ```js
 import { createTestWireAdapter } from '@salesforce/wire-service-jest-utils';
-export const CurrentPageReference = createTestWireAdapter();
+export const getRecord = createLdsTestWireAdapter();
 // ... rest of the mocked module
 ```
+
+### Remove register*TestWireAdapter usages
+
+With your wire adapters mocked using `create*TestWireAdapter`, you can use them directly in your test, making `register*TestWireAdapter` unnecessary.
+
+Example:
+
+```js
+import { registerLdsTestWireAdapter } from '@salesforce/sfdx-lwc-jest';
+import { getRecord } from 'lightning/uiRecordApi';
+
+const getRecordWireAdapter = registerLdsTestWireAdapter(getRecord);
+
+// later in your test, emitting value through the wire...
+    getRecordWireAdapter.emit(data);
+```
+
+can be changed to:
+
+```js
+import { getRecord } from 'lightning/uiRecordApi';
+
+// later in your test, emitting value through the wire...
+    getRecord.emit(data);
+```
+
+<details>
+  <summary>Complete migration example</summary>
+
+#### Test with v2.x of this library
+```js
+// productCard.test.js
+import { createElement } from 'lwc';
+import { registerLdsTestWireAdapter } from '@salesforce/sfdx-lwc-jest';
+import ProductCard from 'c/productCard';
+import { getRecord } from 'lightning/uiRecordApi';
+
+// Import mock data to send through the wire adapter.
+const mockGetRecord = require('./data/getRecord.json');
+
+// Register a test wire adapter.
+const getRecordWireAdapter = registerLdsTestWireAdapter(getRecord);
+
+describe('@wire demonstration test', () => {
+   // Disconnect the component to reset the adapter. It is also
+   // a best practice to clean up after each test.
+   afterEach(() => {
+       while (document.body.firstChild) {
+           document.body.removeChild(document.body.firstChild);
+       }
+   });
+
+   it('displays product name field', () => {
+       const element = createElement('c-product_filter', { is: ProductCard });
+       document.body.appendChild(element);
+       getRecordWireAdapter.emit(mockGetRecord);
+
+       // Resolve a promise to wait for a rerender of the new content.
+       return Promise.resolve().then(() => {
+           const content = element.querySelector('.content');
+           const nameField = mockGetRecord.fields.Name.value;
+           expect(content.textContent).toBe('Name:${nameField}')
+
+       });
+   });
+});
+```
+
+#### Test migrated to v3.x
+```js
+// productCard.test.js
+import { createElement } from 'lwc';
+
+import ProductCard from 'c/productCard';
+import { getRecord } from 'lightning/uiRecordApi';
+
+// Import mock data to send through the wire adapter.
+const mockGetRecord = require('./data/getRecord.json');
+
+describe('@wire demonstration test', () => {
+   // Disconnect the component to reset the adapter. It is also
+   // a best practice to clean up after each test.
+   afterEach(() => {
+       while (document.body.firstChild) {
+           document.body.removeChild(document.body.firstChild);
+       }
+   });
+
+   it('displays product name field', () => {
+       const element = createElement('c-product_filter', { is: ProductCard });
+       document.body.appendChild(element);
+       getRecord.emit(mockGetRecord);
+
+       // Resolve a promise to wait for a rerender of the new content.
+       return Promise.resolve().then(() => {
+           const content = element.querySelector('.content');
+           const nameField = mockGetRecord.fields.Name.value;
+           expect(content.textContent).toBe('Name:${nameField}')
+
+       });
+   });
+});
+```
+</details>
 
 ### FAQ
 
