@@ -76,7 +76,118 @@ describe('createLdsTestWireAdapter', () => {
                 expect(element.getWiredValue('ldsAdapterMockSecondUsage').data).toBe(mockedValue);
             });
         });
-    })
+    });
+
+    describe('emitError()', () => {
+        const adapterName = 'ldsAdapterMock';
+
+        it('should emit error to all wire instances when no filter function is specified', () => {
+            const element = createElement('example-lds', { is: Lds });
+            document.body.appendChild(element);
+
+            return Promise.resolve().then(() => {
+                ldsAdapterMock.emitError();
+
+                const expectedError = {
+                    body: [{
+                        errorCode: 'NOT_FOUND',
+                        message: 'The requested resource does not exist',
+                    }],
+                    ok: false,
+                    status: 404,
+                    statusText: "NOT_FOUND"
+                };
+
+                expect(element.getWiredValue('ldsAdapterMock').error).toStrictEqual(expectedError);
+                expect(element.getWiredValue('ldsAdapterMockSecondUsage').error).toStrictEqual(expectedError);
+            });
+        });
+
+        it('should emit error only to those instances with specific config', () => {
+            const element = createElement('example-lds', { is: Lds });
+            document.body.appendChild(element);
+
+            return Promise.resolve().then(() => {
+                ldsAdapterMock.emitError({}, (config) => config.p2 === 'second');
+
+                const expectedError = {
+                    body: [{
+                        errorCode: 'NOT_FOUND',
+                        message: 'The requested resource does not exist',
+                    }],
+                    ok: false,
+                    status: 404,
+                    statusText: "NOT_FOUND"
+                };
+
+                expect(element.getWiredValue('ldsAdapterMock').error).not.toStrictEqual(expectedError);
+                expect(element.getWiredValue('ldsAdapterMockSecondUsage').error).toStrictEqual(expectedError);
+            });
+        });
+
+        it('should emit default error when invoked without arguments', () => {
+            const element = createElement('example-lds', { is: Lds });
+            document.body.appendChild(element);
+
+            return Promise.resolve().then(() => {
+                ldsAdapterMock.emitError();
+
+                const result = element.getWiredValue(adapterName);
+
+                expect(result.data).toBeUndefined();
+                expect(result.error).toStrictEqual({
+                    body: [{
+                        errorCode: 'NOT_FOUND',
+                        message: 'The requested resource does not exist',
+                    }],
+                    ok: false,
+                    status: 404,
+                    statusText: "NOT_FOUND"
+                });
+            });
+        });
+
+        it('should use body when provided', () => {
+            const element = createElement('example-lds', { is: Lds });
+            document.body.appendChild(element);
+
+            return Promise.resolve().then(() => {
+                const expectedBody = { message: 'This is a test error' };
+                ldsAdapterMock.emitError({ body: expectedBody });
+
+                const result = element.getWiredValue(adapterName);
+
+                expect(result.data).toBeUndefined();
+                expect(result.error.body).toStrictEqual(expectedBody);
+            });
+        });
+
+        it('should throw when status is invalid', () => {
+            const element = createElement('example-lds', { is: Lds });
+            document.body.appendChild(element);
+
+            return Promise.resolve().then(() => {
+                expect(() => {
+                    ldsAdapterMock.emitError({ body: undefined, status: 300 });
+                }).toThrow("'status' must be >= 400 or <= 599");
+            });
+        });
+
+        it('should use statusText when provided', () => {
+            const element = createElement('example-lds', { is: Lds });
+            document.body.appendChild(element);
+
+            return Promise.resolve().then(() => {
+                const expectedStatusText = "test status text";
+                ldsAdapterMock.emitError({ body: undefined, status: 400, statusText: expectedStatusText });
+
+                const result = element.getWiredValue(adapterName);
+
+                expect(result.data).toBeUndefined();
+                expect(result.error.statusText).toBe(expectedStatusText);
+            });
+        });
+    });
 });
 
 describe('LdsTestWireAdapter', () => {

@@ -78,7 +78,115 @@ describe('createLdsTestWireAdapter', () => {
                 expect(element.getWiredValue('ApexMethodSecondUsage').data).toBe(mockedValue);
             });
         });
-    })
+    });
+
+    describe('emitError()', () => {
+        const adapterName = 'ApexMethod';
+
+        it('should emit error to all wire instances when no filter function is specified', () => {
+            const element = createElement('example-apex', { is: Apex });
+            document.body.appendChild(element);
+
+            return Promise.resolve().then(() => {
+                ApexMethod.emitError({});
+
+                const expectedError = {
+                    body: {
+                        message: "An internal server error has occurred"
+                    },
+                    ok: false,
+                    status: 400,
+                    statusText: "Bad Request"
+                };
+
+                expect(element.getWiredValue('ApexMethod').error).toStrictEqual(expectedError);
+                expect(element.getWiredValue('ApexMethodSecondUsage').error).toStrictEqual(expectedError);
+            });
+        });
+
+        it('should emit error only to those instances with specific config', () => {
+            const element = createElement('example-apex', { is: Apex });
+            document.body.appendChild(element);
+
+            return Promise.resolve().then(() => {
+                ApexMethod.emitError({}, (config) => config.p2 === 'second');
+
+                const expectedError = {
+                    body: {
+                        message: "An internal server error has occurred"
+                    },
+                    ok: false,
+                    status: 400,
+                    statusText: "Bad Request"
+                };
+
+                expect(element.getWiredValue('ApexMethod').error).not.toStrictEqual(expectedError);
+                expect(element.getWiredValue('ApexMethodSecondUsage').error).toStrictEqual(expectedError);
+            });
+        });
+
+        it('should emit default error when invoked without arguments', () => {
+            const element = createElement('example-apex', { is: Apex });
+            document.body.appendChild(element);
+
+            return Promise.resolve().then(() => {
+                ApexMethod.emitError();
+
+                const result = element.getWiredValue(adapterName);
+
+                expect(result.data).toBeUndefined();
+                expect(result.error).toStrictEqual({
+                    body: {
+                        message: "An internal server error has occurred"
+                    },
+                    ok: false,
+                    status: 400,
+                    statusText: "Bad Request"
+                });
+            });
+        });
+
+        it('should use body when provided', () => {
+            const element = createElement('example-apex', { is: Apex });
+            document.body.appendChild(element);
+
+            return Promise.resolve().then(() => {
+                const expectedBody = { message: 'This is a test error' };
+                ApexMethod.emitError({ body: expectedBody });
+
+                const result = element.getWiredValue(adapterName);
+
+                expect(result.data).toBeUndefined();
+                expect(result.error.body).toStrictEqual(expectedBody);
+            });
+        });
+
+        it('should throw when status is invalid', () => {
+            const element = createElement('example-apex', { is: Apex });
+            document.body.appendChild(element);
+
+            return Promise.resolve().then(() => {
+                expect(() => {
+                    ApexMethod.emitError({ body: undefined, status: 300 });
+                }).toThrow("'status' must be >= 400 or <= 599");
+            });
+        });
+
+        it('should use statusText when provided', () => {
+            const element = createElement('example-apex', { is: Apex });
+            document.body.appendChild(element);
+
+            return Promise.resolve().then(() => {
+                const expectedStatusText = "test status text";
+                ApexMethod.emitError({ body: undefined, status: 400, statusText: expectedStatusText });
+
+                const result = element.getWiredValue(adapterName);
+
+                expect(result.data).toBeUndefined();
+                expect(result.error.statusText).toBe(expectedStatusText);
+            });
+        });
+    });
 });
 
 describe('ApexTestWireAdapter', () => {

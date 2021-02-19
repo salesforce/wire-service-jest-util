@@ -104,6 +104,19 @@ interface LdsTestWireAdapter {
     error(body?: any, status?: number, statusText?: string): void;
 
     /**
+     * Emits an error. By default this will emit a resource not found error.
+     *
+     * @param errorOptions
+     * @param filterFn     When provided, it will be invoked for every adapter instance on the
+     *                     component with its associated config; if it returns true, the error will be
+     *                     emitted to that particular instance.
+     */
+    emitError(
+        errorOptions?: { body?: any, status?: number, statusText?: string },
+        filterFn?: (config) => boolean
+    ): void;
+
+    /**
      * Gets the last resolved config. Useful if component @wire uses includes
      * dynamic parameters.
      */
@@ -150,6 +163,19 @@ interface ApexTestWireAdapter {
      *  }`
      */
     error(body?: any, status?: number, statusText?: string): void;
+
+    /**
+     * Emits an error. By default this will emit a resource not found error.
+     *
+     * @param errorOptions
+     * @param filterFn     When provided, it will be invoked for every adapter instance on the
+     *                     component with its associated config; if it returns true, the error will be
+     *                     emitted to that particular instance.
+     */
+    emitError(
+        errorOptions?: { body?: any, status?: number, statusText?: string },
+        filterFn?: (config) => boolean
+    ): void;
 
     /**
      * Gets the last resolved config. Useful if component @wire uses includes

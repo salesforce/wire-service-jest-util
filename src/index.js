@@ -98,6 +98,7 @@ function createWireAdapterMock(fn, adapterObserver) {
     adapterMock.emit = (...args) => adapterObserver.emit(...args);
     if (adapterObserver.error) {
         adapterMock.error = (...args) => adapterObserver.error(...args);
+        adapterMock.emitError = (...args) => adapterObserver.emitError(...args);
     }
     adapterMock.getLastConfig = () => adapterObserver.getLastConfig();
 
