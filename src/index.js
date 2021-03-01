@@ -8,10 +8,10 @@ import { ObservableTestWireAdapter } from "./ObservableTestWireAdapter";
 import { ApexWireAdapterObserver } from "./observers/ApexWireAdapterObserver";
 import { LdsWireAdapterObserver } from "./observers/LdsWireAdapterObserver";
 import { TestWireAdapterObserver } from "./observers/TestWireAdapterObserver";
-import { registerAdapter } from "./utils";
+import { deprecatedRegisterAdapter } from "./utils";
 
-const WIRE_ADAPTER_MOCK_MARK = '$wire_adapter_mock$';
 const MIGRATION_LINK = 'https://github.com/salesforce/wire-service-jest-util/blob/master/docs/migrating-from-version-2.x-to-3.x.md';
+const knownAdapterMocks = new WeakSet();
 
 function getMigrationMessageFor(registerFnName) {
     return `${registerFnName} is deprecated. More details: ${MIGRATION_LINK}`;
@@ -24,7 +24,7 @@ function validateAdapterId(adapterId) {
 }
 
 function isWireAdapterMock(adapter) {
-    return !!adapter[WIRE_ADAPTER_MOCK_MARK];
+    return knownAdapterMocks.has(adapter);
 }
 
 /**
@@ -38,7 +38,7 @@ function registerLdsTestWireAdapter(identifier) {
     if (!isWireAdapterMock(identifier)) {
         const spy = new LdsWireAdapterObserver();
 
-        registerAdapter(identifier, spy);
+        deprecatedRegisterAdapter(identifier, spy);
 
         return spy;
     }
@@ -57,7 +57,7 @@ function registerApexTestWireAdapter(identifier) {
     if (!isWireAdapterMock(identifier)) {
         const spy = new ApexWireAdapterObserver();
 
-        registerAdapter(identifier, spy);
+        deprecatedRegisterAdapter(identifier, spy);
 
         return spy;
     }
@@ -76,7 +76,7 @@ function registerTestWireAdapter(identifier) {
     if (!isWireAdapterMock(identifier)) {
         const spy = new TestWireAdapterObserver();
 
-        registerAdapter(identifier, spy);
+        deprecatedRegisterAdapter(identifier, spy);
 
         return spy;
     }
@@ -94,7 +94,7 @@ function createWireAdapterMock(fn, adapterObserver) {
         );
     };
 
-    adapterMock[WIRE_ADAPTER_MOCK_MARK] = true;
+    knownAdapterMocks.add(adapterMock);
     adapterMock.emit = (...args) => adapterObserver.emit(...args);
     if (adapterObserver.error) {
         adapterMock.error = (...args) => adapterObserver.error(...args);
