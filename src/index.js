@@ -4,10 +4,9 @@
  * SPDX-License-Identifier: MIT
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
  */
-import { ObservableTestWireAdapter } from "./ObservableTestWireAdapter";
-import { ApexWireAdapterObserver } from "./observers/ApexWireAdapterObserver";
-import { LdsWireAdapterObserver } from "./observers/LdsWireAdapterObserver";
-import { TestWireAdapterObserver } from "./observers/TestWireAdapterObserver";
+import { buildApexTestWireAdapter } from "./adapters/ApexTestWireAdapter";
+import { buildLdsTestWireAdapter } from "./adapters/LdsTestWireAdapter";
+import { buildTestWireAdapter } from "./adapters/TestWireAdapter";
 import { deprecatedRegisterAdapter } from "./utils";
 
 const MIGRATION_LINK = 'https://github.com/salesforce/wire-service-jest-util/blob/master/docs/migrating-from-version-2.x-to-3.x.md';
@@ -36,7 +35,7 @@ function registerLdsTestWireAdapter(identifier) {
     console.warn(getMigrationMessageFor('registerLdsTestWireAdapter'));
 
     if (!isWireAdapterMock(identifier)) {
-        const spy = new LdsWireAdapterObserver();
+        const spy = buildLdsTestWireAdapter();
 
         deprecatedRegisterAdapter(identifier, spy);
 
@@ -55,7 +54,7 @@ function registerApexTestWireAdapter(identifier) {
     console.warn(getMigrationMessageFor('registerApexTestWireAdapter'));
 
     if (!isWireAdapterMock(identifier)) {
-        const spy = new ApexWireAdapterObserver();
+        const spy = buildApexTestWireAdapter();
 
         deprecatedRegisterAdapter(identifier, spy);
 
@@ -74,47 +73,46 @@ function registerTestWireAdapter(identifier) {
     console.warn(getMigrationMessageFor('registerTestWireAdapter'));
 
     if (!isWireAdapterMock(identifier)) {
-        const spy = new TestWireAdapterObserver();
+        const testAdapter = buildTestWireAdapter();
 
-        deprecatedRegisterAdapter(identifier, spy);
+        deprecatedRegisterAdapter(identifier, testAdapter);
 
-        return spy;
+        return testAdapter;
     }
 
     return identifier;
 }
 
-function createWireAdapterMock(fn, adapterObserver) {
-    const adapterMock = typeof fn === "function" ? fn : function(){};
+function createWireAdapterMock(fn, TestWireAdapter) {
+    let testAdapter = TestWireAdapter;
 
-    adapterMock.adapter = function (dataCallback) {
-        return new ObservableTestWireAdapter(
-            dataCallback,
-            adapterObserver
-        );
-    };
+    if (typeof fn === "function") {
+        testAdapter = fn;
 
-    knownAdapterMocks.add(adapterMock);
-    adapterMock.emit = (...args) => adapterObserver.emit(...args);
-    if (adapterObserver.error) {
-        adapterMock.error = (...args) => adapterObserver.error(...args);
-        adapterMock.emitError = (...args) => adapterObserver.emitError(...args);
+        fn.adapter = TestWireAdapter;
+        fn.emit = (...args) => TestWireAdapter.emit(...args);
+        if (TestWireAdapter.error) {
+            fn.error = (...args) => TestWireAdapter.error(...args);
+            fn.emitError = (...args) => TestWireAdapter.emitError(...args);
+        }
+        fn.getLastConfig = () => TestWireAdapter.getLastConfig();
     }
-    adapterMock.getLastConfig = () => adapterObserver.getLastConfig();
 
-    return adapterMock;
+    knownAdapterMocks.add(testAdapter);
+
+    return testAdapter;
 }
 
 function createApexTestWireAdapter(fn) {
-    return createWireAdapterMock(fn, new ApexWireAdapterObserver());
+    return createWireAdapterMock(fn, buildApexTestWireAdapter());
 }
 
 function createLdsTestWireAdapter(fn) {
-    return createWireAdapterMock(fn, new LdsWireAdapterObserver());
+    return createWireAdapterMock(fn, buildLdsTestWireAdapter());
 }
 
 function createTestWireAdapter(fn) {
-    return createWireAdapterMock(fn, new TestWireAdapterObserver());
+    return createWireAdapterMock(fn, buildTestWireAdapter());
 }
 
 export {

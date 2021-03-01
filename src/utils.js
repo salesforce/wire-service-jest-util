@@ -8,19 +8,36 @@
 // should be removed once all adapters are migrated to the the API.
 const wireAdaptersRegistryHack = global.wireAdaptersRegistryHack || new Map();
 
-export function deprecatedRegisterAdapter(adapterId, adapterObserver) {
+export function deprecatedRegisterAdapter(adapterId, TestWireAdapter) {
+    const eventTargetToAdapterMap = new WeakMap();
+
     const spy = {
         createInstance(wiredEventTarget) {
-            adapterObserver.onCreate(wiredEventTarget);
+            eventTargetToAdapterMap.set(
+                wiredEventTarget,
+                new TestWireAdapter(data => wiredEventTarget.emit(data))
+            );
         },
         connect(wiredEventTarget) {
-            adapterObserver.onConnect(wiredEventTarget);
+            const wireInstance = eventTargetToAdapterMap.get(wiredEventTarget);
+
+            if (wireInstance) {
+                wireInstance.connect();
+            }
         },
         update(wiredEventTarget, config) {
-            adapterObserver.onUpdate(wiredEventTarget, config);
+            const wireInstance = eventTargetToAdapterMap.get(wiredEventTarget);
+
+            if (wireInstance) {
+                wireInstance.update(config);
+            }
         },
         disconnect(wiredEventTarget) {
-            adapterObserver.onDisconnect(wiredEventTarget)
+            const wireInstance = eventTargetToAdapterMap.get(wiredEventTarget);
+
+            if (wireInstance) {
+                wireInstance.disconnect();
+            }
         }
     };
 
