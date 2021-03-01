@@ -11,7 +11,7 @@ import { TestWireAdapterObserver } from "./observers/TestWireAdapterObserver";
 import { registerAdapter } from "./utils";
 
 const WIRE_ADAPTER_MOCK_MARK = '$wire_adapter_mock$';
-const MIGRATION_LINK = 'https://github.com/salesforce/wire-service-jest-util/blob/master/README.md##migrating-from-version-2x-to-3x.';
+const MIGRATION_LINK = 'https://github.com/salesforce/wire-service-jest-util/blob/master/docs/migrating-from-version-2.x-to-3.x.md';
 
 function getMigrationMessageFor(registerFnName) {
     return `${registerFnName} is deprecated. More details: ${MIGRATION_LINK}`;
