@@ -88,14 +88,9 @@ function createWireAdapterMock(fn, TestWireAdapter) {
 
     if (typeof fn === "function") {
         testAdapter = fn;
+        Object.defineProperty(fn, 'adapter', { value: TestWireAdapter });
 
-        fn.adapter = TestWireAdapter;
-        fn.emit = (...args) => TestWireAdapter.emit(...args);
-        if (TestWireAdapter.error) {
-            fn.error = (...args) => TestWireAdapter.error(...args);
-            fn.emitError = (...args) => TestWireAdapter.emitError(...args);
-        }
-        fn.getLastConfig = () => TestWireAdapter.getLastConfig();
+        Object.setPrototypeOf(fn, TestWireAdapter);
     }
 
     knownAdapterMocks.add(testAdapter);

@@ -51,7 +51,15 @@ describe('registerApexTestWireAdapter', () => {
     });
 });
 
-describe('createLdsTestWireAdapter', () => {
+describe('createApexTestWireAdapter', () => {
+    it('should be able to invoke imperatively an adapter', () => {
+        const p1 = 1;
+        const p2 = { foo: 1 };
+        ApexMethod(p1, p2);
+
+        expect(ApexMethod).toHaveBeenCalledWith(p1, p2);
+    });
+
     describe('emit()', () => {
         it('should emit values to all wire instances when no filter function is specified', () => {
             const element = createElement('example-apex', { is: Apex });
