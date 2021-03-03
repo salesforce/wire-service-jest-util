@@ -102,12 +102,13 @@ describe('TestWireAdapter', () => {
             });
 
             describe('emit()', () => {
-                it('should not emit value when component is created but not connected', () => {
+                it('should emit value when component is created but not connected', () => {
                     const element = createElement('example-generic', { is: Generic });
-
+                    const expectedValue = {};
+                    adapter.emit(expectedValue);
                     const result = element.getWiredValue(adapterName);
 
-                    expect(result).toBeUndefined();
+                    expect(result).toBe(expectedValue);
                 });
 
                 it('should not emit values after component was disconnected', () => {

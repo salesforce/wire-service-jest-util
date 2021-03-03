@@ -27,6 +27,7 @@ export class TestWireAdapterTemplate {
 
     constructor(dataCallback) {
         this._dataCallback = dataCallback;
+        this.constructor._wireInstances.add(this);
     }
 
     update(config) {

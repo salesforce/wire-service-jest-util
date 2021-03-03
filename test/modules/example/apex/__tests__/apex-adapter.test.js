@@ -220,13 +220,22 @@ describe('ApexTestWireAdapter', () => {
             });
 
             describe('emit()', () => {
-                it('should emit value when component is created but not connected', () => {
+                it('should emit default value when component is created but not connected', () => {
                     const element = createElement('example-apex', { is: Apex });
 
                     const result = element.getWiredValue(adapterName);
 
                     expect(result.data).toBeUndefined();
                     expect(result.error).toBeUndefined();
+                });
+
+                it('should emit value when component is created but not connected', () => {
+                    const element = createElement('example-apex', { is: Apex });
+                    const expectedValue = {};
+                    adapter.emit(expectedValue);
+                    const result = element.getWiredValue(adapterName);
+
+                    expect(result.data).toBe(expectedValue);
                 });
 
                 it('should not emit values after component was disconnected', () => {
