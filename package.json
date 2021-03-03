@@ -5,6 +5,9 @@
   "license": "MIT",
   "main": "dist/wire-service-jest-util.common.js",
   "module": "dist/wire-service-jest-util.es.js",
+  "files": [
+    "dist/*"
+  ],
   "scripts": {
     "prepare": "yarn build",
     "check-license-headers": "node ./scripts/checkLicenseHeaders.js",
