@@ -5,6 +5,9 @@
   "license": "MIT",
   "main": "dist/wire-service-jest-util.common.js",
   "module": "dist/wire-service-jest-util.es.js",
+  "files": [
+    "dist/*"
+  ],
   "scripts": {
     "prepare": "yarn build",
     "check-license-headers": "node ./scripts/checkLicenseHeaders.js",
@@ -26,10 +29,13 @@
     "@lwc/engine": "^1.5.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.13.8",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@lwc/compiler": "^1.11.3",
     "@lwc/engine": "^1.11.3",
-    "@lwc/synthetic-shadow": "^1.11.3",
     "@lwc/jest-preset": "^9.0.0",
+    "@lwc/synthetic-shadow": "^1.11.3",
+    "@rollup/plugin-babel": "^5.3.0",
     "@salesforce/eslint-config-lwc": "^0.5.0",
     "eslint": "^6.8.0",
     "isbinaryfile": "^4.0.6",
