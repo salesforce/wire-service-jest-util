@@ -127,6 +127,8 @@ describe('@wire demonstration test', () => {
 
 No, all exposed modules in the platform are mocked for you.
 
+**Note:** The platform does not mock apex and apexContinuation methods, and test authors will need to keep implementing their mocks. Notice that when testing an apex method used with `@wire`, you should change your apex method mock to use `createApexTestWireAdapter`.
+
 **I have an SFDX project, and I have custom mocks for some modules exposing wire adapters, what should I do?**
 
 If you are on platform, we already provide those mocks for you, removing your custom mocks should be enough. If you want to keep your custom mocks, follow the steps in [Migrating from version 2.x to 3.x](#migrating-from-version-2x-to-3x).
