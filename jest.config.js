@@ -8,6 +8,7 @@
 
 module.exports = {
     preset: '@lwc/jest-preset',
+    testEnvironment: 'jsdom',
     moduleNameMapper: {
         '@salesforce/wire-service-jest-util': '<rootDir>/src/',
         '^(example)/(.+)$': '<rootDir>/test/modules/$1/$2/$2',
