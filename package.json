@@ -31,21 +31,21 @@
   "devDependencies": {
     "@babel/core": "^7.15.5",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
-    "@lwc/compiler": "^2.3.4",
-    "@lwc/engine-dom": "^2.3.4",
-    "@lwc/eslint-plugin-lwc": "^1.0.1",
-    "@lwc/jest-preset": "^11.2.0",
-    "@lwc/synthetic-shadow": "^2.3.4",
+    "@lwc/compiler": "^2.5.3",
+    "@lwc/engine-dom": "^2.5.3",
+    "@lwc/eslint-plugin-lwc": "^1.1.0",
+    "@lwc/jest-preset": "^11.2.1",
+    "@lwc/synthetic-shadow": "^2.5.3",
     "@rollup/plugin-babel": "^5.3.0",
-    "@salesforce/eslint-config-lwc": "^2.2.0",
+    "@salesforce/eslint-config-lwc": "^3.0.0",
     "@salesforce/eslint-plugin-lightning": "^0.1.1",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-jest": "^24.4.0",
+    "eslint-plugin-jest": "^24.5.2",
     "isbinaryfile": "^4.0.8",
-    "jest": "^27.1.0",
+    "jest": "^27.2.4",
     "rimraf": "^3.0.2",
-    "rollup": "^2.56.3"
+    "rollup": "^2.58.0"
   },
   "lwc": {
     "modules": [
