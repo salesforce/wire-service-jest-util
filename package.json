@@ -15,7 +15,8 @@
     "lint": "eslint src",
     "build": "rollup -c",
     "test": "jest --coverage",
-    "release": "yarn build && npm publish --access public"
+    "release": "yarn build && yarn release:publish",
+    "release:publish": "npm publish --access public"
   },
   "keywords": [
     "lwc",
