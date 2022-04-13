@@ -15,7 +15,6 @@
     "lint": "eslint src",
     "build": "rollup -c",
     "test": "jest --coverage",
-    "release": "yarn build && yarn release:publish",
     "release:version": "npm version",
     "release:publish": "npm publish --access public --registry=https://registry.npmjs.org",
     "release:publish:ci": "npm publish --access public --registry=https://registry.npmjs.org --dry-run"
