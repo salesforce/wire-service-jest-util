@@ -17,7 +17,7 @@
     "test": "jest --coverage",
     "release:version": "npm version",
     "release:publish": "npm publish --access public --registry=https://registry.npmjs.org",
-    "release:publish:ci": "npm publish --access public --registry=https://registry.npmjs.org --dry-run"
+    "release:publish:ci": "./scripts/publish.js"
   },
   "keywords": [
     "lwc",
