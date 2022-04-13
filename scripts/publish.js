@@ -13,8 +13,7 @@ const ARGS = [
     // https://github.com/lerna/lerna/tree/master/commands/publish
     'publish',
     // Publish as public
-    '--access',
-    'public',
+    '--access public',
     // Explicitly set registry
     '--registry=https://registry.npmjs.org',
     // Set for safety while testing
