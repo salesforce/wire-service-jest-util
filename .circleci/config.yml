@@ -23,14 +23,13 @@ commands:
           key: v2-yarn-deps-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
-            
+
   restore_yarn_cache:
     description: Restore cache from previous build
     steps:
       - restore_cache:
           keys:
           - v2-yarn-deps-{{ checksum "yarn.lock" }}
-          - v2-yarn-deps-
 
 jobs:
   build:
