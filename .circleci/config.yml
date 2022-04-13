@@ -22,7 +22,8 @@ commands:
       - save_cache:
           key: v2-yarn-deps-{{ checksum "yarn.lock" }}
           paths:
-            - node_modules
+            - ~/.cache/yarn
+            
   restore_yarn_cache:
     description: Restore cache from previous build
     steps:
