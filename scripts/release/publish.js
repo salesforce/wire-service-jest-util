@@ -16,8 +16,6 @@ const ARGS = [
     '--access public',
     // Explicitly set registry
     '--registry=https://registry.npmjs.org',
-    // Set for safety while testing
-    '--dry-run',
 ];
 
 const { stderr, stdin, stdout } = process;
