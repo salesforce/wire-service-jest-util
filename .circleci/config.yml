@@ -67,6 +67,10 @@ jobs:
           command: yarn release:publish:ci
 
 workflows:
+  # temporary backwards compatibility until Github picks up the new workflow name
+  workflow:
+    jobs:
+      - build
   build_and_test:
     jobs:
       - build
