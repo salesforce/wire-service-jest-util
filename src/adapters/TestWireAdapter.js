@@ -22,6 +22,10 @@ export class TestWireAdapterTemplate {
         return this._lastConfig;
     }
 
+    static resetLastConfig() {
+        this._lastConfig = null;
+    }
+
     _dataCallback;
     config = {};
 
