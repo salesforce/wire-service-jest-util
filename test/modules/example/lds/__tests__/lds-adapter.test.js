@@ -212,6 +212,28 @@ describe('LdsTestWireAdapter', () => {
                 });
             });
 
+            describe('resetLastConfig', () => {
+                test('getLastConfig() should return the last available config despite we run a new set of test', () => {
+                    //Arrange
+                    const actual = adapter.getLastConfig();
+
+                    // Assert
+                    expect(actual).not.toBeNull();
+                });
+
+                it('should reset the last available', () => {
+                    // Arrange
+                    let actual;
+
+                    //Act
+                    adapter.resetLastConfig();
+                    actual = adapter.getLastConfig();
+
+                    // Assert
+                    expect(actual).toBeNull();
+                });
+            });
+
             describe('emit()', () => {
                 it('should emit default value when component is created but not connected', () => {
                     const element = createElement('example-lds', { is: Lds });
