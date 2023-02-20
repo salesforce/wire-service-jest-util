@@ -203,18 +203,18 @@ describe('ApexTestWireAdapter', () => {
             describe('getLastConfig()', () => {
                 it('should return last available config', () => {
                     const element = createElement('example-apex', { is: Apex });
-                    element.param = 'v1';
+                    element.param = `v1-${adapterName}`;
 
                     document.body.appendChild(element);
 
                     return Promise.resolve()
                         .then(() => {
-                            expect(adapter.getLastConfig().p).toBe('v1');
+                            expect(adapter.getLastConfig().p).toBe(`v1-${adapterName}`);
 
-                            element.param = 'v2';
+                            element.param = `v2-${adapterName}`;
                         })
                         .then(() => {
-                            expect(adapter.getLastConfig().p).toBe('v2');
+                            expect(adapter.getLastConfig().p).toBe(`v2-${adapterName}`);
                         });
                 });
             });

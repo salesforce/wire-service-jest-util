@@ -196,18 +196,18 @@ describe('LdsTestWireAdapter', () => {
             describe('getLastConfig()', () => {
                 it('should return last available config', () => {
                     const element = createElement('example-lds', { is: Lds });
-                    element.param = 'v1';
+                    element.param = `v1-${adapterName}`;
 
                     document.body.appendChild(element);
 
                     return Promise.resolve()
                         .then(() => {
-                            expect(adapter.getLastConfig().p).toStrictEqual('v1');
+                            expect(adapter.getLastConfig().p).toStrictEqual(`v1-${adapterName}`);
 
-                            element.param = 'v2';
+                            element.param = `v2-${adapterName}`;
                         })
                         .then(() => {
-                            expect(adapter.getLastConfig().p).toStrictEqual('v2');
+                            expect(adapter.getLastConfig().p).toStrictEqual(`v2-${adapterName}`);
                         });
                 });
             });
