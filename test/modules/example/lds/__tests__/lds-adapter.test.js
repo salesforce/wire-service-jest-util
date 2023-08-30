@@ -196,19 +196,41 @@ describe('LdsTestWireAdapter', () => {
             describe('getLastConfig()', () => {
                 it('should return last available config', () => {
                     const element = createElement('example-lds', { is: Lds });
-                    element.param = 'v1';
+                    element.param = `v1-${adapterName}`;
 
                     document.body.appendChild(element);
 
                     return Promise.resolve()
                         .then(() => {
-                            expect(adapter.getLastConfig().p).toStrictEqual('v1');
+                            expect(adapter.getLastConfig().p).toStrictEqual(`v1-${adapterName}`);
 
-                            element.param = 'v2';
+                            element.param = `v2-${adapterName}`;
                         })
                         .then(() => {
-                            expect(adapter.getLastConfig().p).toStrictEqual('v2');
+                            expect(adapter.getLastConfig().p).toStrictEqual(`v2-${adapterName}`);
                         });
+                });
+            });
+
+            describe('resetLastConfig', () => {
+                test('getLastConfig() should return the last available config despite we run a new set of test', () => {
+                    //Arrange
+                    const actual = adapter.getLastConfig();
+
+                    // Assert
+                    expect(actual).not.toBeNull();
+                });
+
+                it('should reset the last available', () => {
+                    // Arrange
+                    let actual;
+
+                    //Act
+                    adapter.resetLastConfig();
+                    actual = adapter.getLastConfig();
+
+                    // Assert
+                    expect(actual).toBeNull();
                 });
             });
 
