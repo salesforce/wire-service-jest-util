@@ -4,11 +4,18 @@
  * SPDX-License-Identifier: MIT
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
  */
-export class TestWireAdapterTemplate {
-    static _lastConfig = null;
-    static _wireInstances = new Set();
 
-    static emit(value, filterFn) {
+export interface HttpFetchResponse {
+    body: any;
+    status: number;
+    statusText: string;
+}
+
+export class TestWireAdapterTemplate {
+    static _lastConfig: Record<string, any> | null = null;
+    static _wireInstances = new Set<TestWireAdapterTemplate>();
+
+    static emit(value: any, filterFn?: (config: Record<string, any>) => boolean) {
         let instances = Array.from(this._wireInstances);
 
         if (typeof filterFn === 'function') {
@@ -25,26 +32,26 @@ export class TestWireAdapterTemplate {
     _dataCallback;
     config = {};
 
-    constructor(dataCallback) {
+    constructor(dataCallback: (value: any) => void) {
         this._dataCallback = dataCallback;
-        this.constructor._wireInstances.add(this);
+        (this.constructor as typeof TestWireAdapterTemplate)._wireInstances.add(this);
     }
 
-    update(config) {
+    update(config: Record<string, any>) {
         this.config = config;
-        this.constructor._lastConfig = config;
+        (this.constructor as typeof TestWireAdapterTemplate)._lastConfig = config;
     }
 
     connect() {
-        this.constructor._lastConfig = {};
-        this.constructor._wireInstances.add(this);
+        (this.constructor as typeof TestWireAdapterTemplate)._lastConfig = {};
+        (this.constructor as typeof TestWireAdapterTemplate)._wireInstances.add(this);
     }
 
     disconnect() {
-        this.constructor._wireInstances.delete(this);
+        (this.constructor as typeof TestWireAdapterTemplate)._wireInstances.delete(this);
     }
 
-    emit(value) {
+    emit(value: any) {
         this._dataCallback(value);
     }
 
@@ -56,6 +63,6 @@ export class TestWireAdapterTemplate {
 export function buildTestWireAdapter() {
     return class TestWireAdapter extends TestWireAdapterTemplate {
         static _lastConfig = null;
-        static _wireInstances = new Set();
-    }
+        static _wireInstances = new Set<TestWireAdapter>();
+    };
 }

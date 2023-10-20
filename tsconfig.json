@@ -1,0 +1,15 @@
+{
+    "include": ["src/"],
+    "compilerOptions": {
+        "noEmitOnError": true,
+        "declaration": true,
+
+        "target": "es2018",
+
+        // @rollup/plugin-typescript is actually responsible for writing dist files. Using "." as the declarationDir
+        // ensures that .d.ts files are co-located with JS files, e.g. `dist/index.js` and `dist/index.d.ts`.
+        "declarationDir": "dist/dts",
+        "strict": true,
+        "lib": ["ES2018", "DOM"]
+    }
+}

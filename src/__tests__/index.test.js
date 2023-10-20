@@ -8,7 +8,7 @@ import * as target from '../index.js';
 
 describe('registerLdsTestWireAdapter', () => {
     it('returns a test wire adapter', () => {
-        const testWireAdapter = target.registerLdsTestWireAdapter(()=>{});
+        const testWireAdapter = target.registerLdsTestWireAdapter(() => {});
         expect(testWireAdapter).toHaveProperty('emit');
         expect(testWireAdapter).toHaveProperty('error');
         expect(testWireAdapter).toHaveProperty('getLastConfig');
@@ -23,7 +23,7 @@ describe('registerLdsTestWireAdapter', () => {
 
 describe('registerTestWireAdapter', () => {
     it('returns a test wire adapter', () => {
-        const testWireAdapter = target.registerTestWireAdapter(()=>{});
+        const testWireAdapter = target.registerTestWireAdapter(() => {});
         expect(testWireAdapter).toHaveProperty('emit');
         expect(testWireAdapter).not.toHaveProperty('error');
         expect(testWireAdapter).toHaveProperty('getLastConfig');
