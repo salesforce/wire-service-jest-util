@@ -66,5 +66,8 @@
     "volta": {
         "node": "18.18.0",
         "yarn": "1.22.19"
+    },
+    "dependencies": {
+        "@types/jest": "^29.5.6"
     }
 }
