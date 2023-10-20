@@ -16,6 +16,7 @@ describe('registerLdsTestWireAdapter', () => {
 
     it('throws error when no adapter id', () => {
         expect(() => {
+            // @ts-ignore
             target.registerTestWireAdapter();
         }).toThrow('No adapter specified');
     });
@@ -31,6 +32,7 @@ describe('registerTestWireAdapter', () => {
 
     it('throws error when no adapter id', () => {
         expect(() => {
+            // @ts-ignore
             target.registerTestWireAdapter();
         }).toThrow('No adapter specified');
     });
