@@ -5,9 +5,17 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
  */
 
-import { TestWireAdapterTemplate } from "./TestWireAdapter";
+import { TestWireAdapterTemplate } from './TestWireAdapter';
 
-function buildErrorObject({ body, status, statusText }) {
+function buildErrorObject({
+    body,
+    status,
+    statusText,
+}: {
+    body?: any;
+    status?: number;
+    statusText?: string;
+}) {
     if (status && (status < 400 || status > 599)) {
         throw new Error("'status' must be >= 400 or <= 599");
     }
@@ -29,23 +37,26 @@ function buildErrorObject({ body, status, statusText }) {
 }
 
 class ApexTestWireAdapterTemplate extends TestWireAdapterTemplate {
-    static emit(value, filterFn) {
+    static emit(value: any, filterFn?: (config: Record<string, any>) => boolean) {
         super.emit({ data: value, error: undefined }, filterFn);
     }
 
-    static emitError(errorOptions, filterFn) {
+    static emitError(
+        errorOptions: { body?: any; status?: number; statusText?: string },
+        filterFn: (config: Record<string, any>) => boolean
+    ) {
         const err = buildErrorObject(errorOptions || {});
 
         super.emit({ data: undefined, error: err }, filterFn);
     }
 
-    static error(body, status, statusText) {
+    static error(body?: any, status?: number, statusText?: string) {
         const err = buildErrorObject({ body, status, statusText });
 
         super.emit({ data: undefined, error: err });
     }
 
-    constructor(dataCallback) {
+    constructor(dataCallback: (value: any) => void) {
         super(dataCallback);
 
         this.emit({ data: undefined, error: undefined });
@@ -55,6 +66,6 @@ class ApexTestWireAdapterTemplate extends TestWireAdapterTemplate {
 export function buildApexTestWireAdapter() {
     return class ApexTestWireAdapter extends ApexTestWireAdapterTemplate {
         static _lastConfig = null;
-        static _wireInstances = new Set();
-    }
+        static _wireInstances = new Set<ApexTestWireAdapter>();
+    };
 }

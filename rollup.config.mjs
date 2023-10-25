@@ -5,13 +5,15 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
  */
 import { babel } from '@rollup/plugin-babel';
+import typescript from '@rollup/plugin-typescript';
 
 export default {
-    input: 'src/index.js',
+    input: 'src/index.ts',
     plugins: [
+        typescript(),
         babel({
             babelHelpers: 'bundled',
-            plugins: [['@babel/plugin-proposal-class-properties']]
+            plugins: [['@babel/plugin-proposal-class-properties']],
         }),
     ],
     output: [
@@ -21,7 +23,7 @@ export default {
         },
         {
             format: 'cjs',
-            file: 'dist/wire-service-jest-util.common.js'
-        }
-    ]
+            file: 'dist/wire-service-jest-util.common.js',
+        },
+    ],
 };
