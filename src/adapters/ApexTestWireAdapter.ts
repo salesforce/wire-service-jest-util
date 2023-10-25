@@ -5,9 +5,17 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
  */
 
-import { HttpFetchResponse, TestWireAdapterTemplate } from './TestWireAdapter';
+import { TestWireAdapterTemplate } from './TestWireAdapter';
 
-function buildErrorObject({ body, status, statusText }: HttpFetchResponse) {
+function buildErrorObject({
+    body,
+    status,
+    statusText,
+}: {
+    body?: any;
+    status?: number;
+    statusText?: string;
+}) {
     if (status && (status < 400 || status > 599)) {
         throw new Error("'status' must be >= 400 or <= 599");
     }
@@ -34,7 +42,7 @@ class ApexTestWireAdapterTemplate extends TestWireAdapterTemplate {
     }
 
     static emitError(
-        errorOptions: HttpFetchResponse,
+        errorOptions: { body?: any; status?: number; statusText?: string },
         filterFn: (config: Record<string, any>) => boolean
     ) {
         const err = buildErrorObject(errorOptions || {});
@@ -42,7 +50,7 @@ class ApexTestWireAdapterTemplate extends TestWireAdapterTemplate {
         super.emit({ data: undefined, error: err }, filterFn);
     }
 
-    static error(body: any, status: number, statusText: string) {
+    static error(body?: any, status?: number, statusText?: string) {
         const err = buildErrorObject({ body, status, statusText });
 
         super.emit({ data: undefined, error: err });

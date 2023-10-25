@@ -5,12 +5,6 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
  */
 
-export interface HttpFetchResponse {
-    body: any;
-    status: number;
-    statusText: string;
-}
-
 export class TestWireAdapterTemplate {
     static _lastConfig: Record<string, any> | null = null;
     static _wireInstances = new Set<TestWireAdapterTemplate>();
