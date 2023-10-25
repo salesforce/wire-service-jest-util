@@ -16,7 +16,8 @@ describe('registerLdsTestWireAdapter', () => {
 
     it('throws error when no adapter id', () => {
         expect(() => {
-            // @ts-ignore
+            // @ts-ignore because we aren't passing any argument here and TS fails
+            // but in JS, since there's no check, this test is necessary
             target.registerTestWireAdapter();
         }).toThrow('No adapter specified');
     });
@@ -32,7 +33,7 @@ describe('registerTestWireAdapter', () => {
 
     it('throws error when no adapter id', () => {
         expect(() => {
-            // @ts-ignore
+            // @ts-ignore same reason as above
             target.registerTestWireAdapter();
         }).toThrow('No adapter specified');
     });
