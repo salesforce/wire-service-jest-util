@@ -1230,9 +1230,9 @@
     postcss-value-parser "~4.2.0"
 
 "@lwc/synthetic-shadow@^6.5.0":
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/@lwc/synthetic-shadow/-/synthetic-shadow-6.5.0.tgz#c3872501988019e084791caa79b2f4e68a29325d"
-  integrity sha512-0Xn+q0QwTI5DaOawHA9E+/QXTz2+DhOTqcfmYFENPvuqDLnETyiWnnbu9bFoBUMgh1U6eyBN+3sco69oL6xY5Q==
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/@lwc/synthetic-shadow/-/synthetic-shadow-6.6.1.tgz#d6c1bf90df31a6eabe84885fbbe606b4fd018206"
+  integrity sha512-A5J3kvxfp6wMvT8fYuqNGW2/pYT/6/XeeGcylYoF6+MkgzFx+y+ekeO08tOmb+RoNc8RXEOg1SvDWVCqrc+WwQ==
 
 "@lwc/template-compiler@6.5.0":
   version "6.5.0"
