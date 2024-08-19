@@ -38,7 +38,7 @@
         "@lwc/compiler": "^6.5.0",
         "@lwc/engine-dom": "^6.5.0",
         "@lwc/eslint-plugin-lwc": "^1.7.2",
-        "@lwc/jest-preset": "^15.0.0",
+        "@lwc/jest-preset": "^16.0.0",
         "@lwc/synthetic-shadow": "^6.5.0",
         "@rollup/plugin-babel": "^6.0.4",
         "@rollup/plugin-typescript": "^11.1.6",
