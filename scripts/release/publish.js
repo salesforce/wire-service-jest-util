@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
 /*
- * Copyright (c) 2022, salesforce.com, inc.
+ * Copyright (c) 2025, salesforce.com, inc.
  * All rights reserved.
  * SPDX-License-Identifier: MIT
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
  */
-const execa = require('execa');
+const { execaSync } = require('execa');
 const isCI = require('is-ci');
 
 const ARGS = [
@@ -18,20 +18,16 @@ const ARGS = [
     '--registry=https://registry.npmjs.org',
 ];
 
-const { stderr, stdin, stdout } = process;
-
 if (!isCI) {
     console.error('This script is only meant to run in CI.');
     process.exit(1);
 }
 
 try {
-    execa.sync('npm', ARGS, {
+    execaSync('npm', ARGS, {
         // Prioritize locally installed binaries (node_modules/.bin)
         preferLocal: true,
-        stderr,
-        stdin,
-        stdout,
+        stdio: 'inherit',
     });
 } catch (ex) {
     console.error(ex);
